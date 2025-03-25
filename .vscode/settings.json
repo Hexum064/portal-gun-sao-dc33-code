@@ -5,14 +5,19 @@
     "cSpell.words": [
         "CLKMD",
         "disgint",
+        "DPFC",
         "dzsn",
         "engint",
+        "icname",
         "idxm",
+        "iflfu",
         "IHRC",
         "ILRC",
         "INTEN",
         "INTRQ",
+        "mpdk",
         "PADIER",
-        "PAPL"
+        "PAPL",
+        "runvdd"
     ]
 }
