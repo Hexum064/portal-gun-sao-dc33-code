@@ -1,5 +1,18 @@
 {
     "files.associations": {
         "pdkcommon.h": "c"
-    }
+    },
+    "cSpell.words": [
+        "CLKMD",
+        "disgint",
+        "dzsn",
+        "engint",
+        "idxm",
+        "IHRC",
+        "ILRC",
+        "INTEN",
+        "INTRQ",
+        "PADIER",
+        "PAPL"
+    ]
 }
