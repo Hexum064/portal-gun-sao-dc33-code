@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__SDCC_pdk14=",
+                "__sfr=unsigned char",
+                "__sfr16=unsigned short",
+                "__sbit=int",
+                "__at(a)= ",
+                "__interrupt(IntelliSense_Hack)="
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c99",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
