@@ -408,56 +408,56 @@
                                     408 ;	 function output_leds
                                     409 ;	-----------------------------------------
       0000F2                        410 _output_leds:
-                                    411 ;	main.c: 79: __asm__("    mov a, _bytes              ;move our byte count into a");
+                                    411 ;	main.c: 78: __asm__("    mov a, _bytes              ;move our byte count into a");
       0000F2 9D 0F                  412 	mov	a, _bytes              ;move our byte count into a
-                                    413 ;	main.c: 80: __asm__("    mov _byte_ctr, a           ;move a into our index counter");
+                                    413 ;	main.c: 79: __asm__("    mov _byte_ctr, a           ;move a into our index counter");
       0000F4 9F 0B                  414 	mov	_byte_ctr, a           ;move a into our index counter
-                                    415 ;	main.c: 81: __asm__("    mov	a, #(_pixel_buff)   ;load the address of the array into a");
+                                    415 ;	main.c: 80: __asm__("    mov	a, #(_pixel_buff)   ;load the address of the array into a");
       0000F6 11 2F                  416 	mov	a, #(_pixel_buff)   ;load the address of the array into a
-                                    417 ;	main.c: 82: __asm__("    mov	p, a                ;put that address into p (a mem location)");
+                                    417 ;	main.c: 81: __asm__("    mov	p, a                ;put that address into p (a mem location)");
       0000F8 80 0B                  418 	mov	p, a                ;put that address into p (a mem location)
-                                    419 ;	main.c: 83: __asm__("00010$:");
+                                    419 ;	main.c: 82: __asm__("00010$:");
       0000FA                        420 	00010$:
-                                    421 ;	main.c: 84: __asm__("    idxm	a, p                ;load the byte data from the array into a");
+                                    421 ;	main.c: 83: __asm__("    idxm	a, p                ;load the byte data from the array into a");
       0000FA 81 03                  422 	idxm	a, p                ;load the byte data from the array into a
-                                    423 ;	main.c: 85: __asm__("    inc p                      ;inc p to the next address");
+                                    423 ;	main.c: 84: __asm__("    inc p                      ;inc p to the next address");
       0000FC 00 12                  424 	inc	p                      ;inc p to the next address
-                                    425 ;	main.c: 86: __asm__("    mov	_byte_t+0, a        ;load the byte data into byte_t");
-      0000FE 9E 0B                  426 	mov	_byte_t+0, a        ;load the byte data into byte_t
-                                    427 ;	main.c: 87: __asm__("    mov a, #0x08               ;reset the bit count");
+                                    425 ;	main.c: 85: __asm__("    mov	_byte_t, a          ;load the byte data into byte_t");
+      0000FE 9E 0B                  426 	mov	_byte_t, a          ;load the byte data into byte_t
+                                    427 ;	main.c: 86: __asm__("    mov a, #0x08               ;reset the bit count");
       000100 08 2F                  428 	mov	a, #0x08               ;reset the bit count
-                                    429 ;	main.c: 88: __asm__("00011$:");
+                                    429 ;	main.c: 87: __asm__("00011$:");
       000102                        430 	00011$:
-                                    431 ;	main.c: 89: __asm__("    ;output bit");
+                                    431 ;	main.c: 88: __asm__("    ;output bit");
                                     432 ;output	bit
-                                    433 ;	main.c: 90: __asm__("    set1.io __pa, #5           ;set the output pin high");
+                                    433 ;	main.c: 89: __asm__("    set1.io __pa, #5           ;set the output pin high");
       000102 50 1F                  434 	set1.io	__pa, #5           ;set the output pin high
-                                    435 ;	main.c: 91: __asm__("    t1sn _byte_t, #7           ;if the current MSB is 1, skip setting the pin low now");
+                                    435 ;	main.c: 90: __asm__("    t1sn _byte_t, #7           ;if the current MSB is 1, skip setting the pin low now");
       000104 DE 23                  436 	t1sn	_byte_t, #7           ;if the current MSB is 1, skip setting the pin low now
-                                    437 ;	main.c: 92: __asm__("    set0.io __pa, #5           ;set the output pin low");
+                                    437 ;	main.c: 91: __asm__("    set0.io __pa, #5           ;set the output pin low");
       000106 50 1D                  438 	set0.io	__pa, #5           ;set the output pin low
-                                    439 ;	main.c: 93: __asm__("    nop                        ;wait one cycle");
+                                    439 ;	main.c: 92: __asm__("    nop                        ;wait one cycle");
       000108 00 00                  440 	nop	                       ;wait one cycle
-                                    441 ;	main.c: 94: __asm__("    set0.io __pa, #5           ;set the output pin low");
+                                    441 ;	main.c: 93: __asm__("    set0.io __pa, #5           ;set the output pin low");
       00010A 50 1D                  442 	set0.io	__pa, #5           ;set the output pin low
-                                    443 ;	main.c: 95: __asm__("    sl _byte_t                 ;left-shift the data byte (the LEDs are MSB first)");
+                                    443 ;	main.c: 94: __asm__("    sl _byte_t                 ;left-shift the data byte (the LEDs are MSB first)");
       00010C 9E 15                  444 	sl	_byte_t                 ;left-shift the data byte (the LEDs are MSB first)
-                                    445 ;	main.c: 96: __asm__("    dzsn a                     ;dec a and skip next instruction if 0");
+                                    445 ;	main.c: 95: __asm__("    dzsn a                     ;dec a and skip next instruction if 0");
       00010E 63 00                  446 	dzsn	a                     ;dec a and skip next instruction if 0
-                                    447 ;	main.c: 97: __asm__("    goto 00011$                ;jump back to 00011");
+                                    447 ;	main.c: 96: __asm__("    goto 00011$                ;jump back to 00011");
       000110 81 30                  448 	goto	00011$                ;jump back to 00011
-                                    449 ;	main.c: 98: __asm__("    dzsn _byte_ctr             ;dec our index counter and skip the goto if 0");
+                                    449 ;	main.c: 97: __asm__("    dzsn _byte_ctr             ;dec our index counter and skip the goto if 0");
       000112 9F 11                  450 	dzsn	_byte_ctr             ;dec our index counter and skip the goto if 0
-                                    451 ;	main.c: 99: __asm__("    goto	00010$              ;goto the next byte");
+                                    451 ;	main.c: 98: __asm__("    goto	00010$              ;goto the next byte");
       000114 7D 30                  452 	goto	00010$              ;goto the next byte
-                                    453 ;	main.c: 101: }
+                                    453 ;	main.c: 99: }
       000116 7A 00                  454 	ret
-                                    455 ;	main.c: 103: void update_pattern()
+                                    455 ;	main.c: 101: void update_pattern()
                                     456 ;	-----------------------------------------
                                     457 ;	 function update_pattern
                                     458 ;	-----------------------------------------
       000118                        459 _update_pattern:
-                                    460 ;	main.c: 108: switch (pattern_index)
+                                    460 ;	main.c: 106: switch (pattern_index)
       000118 A3 0F                  461 	mov	a, _pattern_index+0
       00011A 00 2B                  462 	cneqsn	a, #0x00
       00011C 94 30                  463 	goto	00101$
@@ -469,9 +469,9 @@
       000124 BA 30                  469 	goto	00103$
       000126                        470 00173$:
       000126 D1 30                  471 	goto	00104$
-                                    472 ;	main.c: 110: case 0:
+                                    472 ;	main.c: 108: case 0:
       000128                        473 00101$:
-                                    474 ;	main.c: 111: copy_to_buff(off_color, LED_COUNT);
+                                    474 ;	main.c: 109: copy_to_buff(off_color, LED_COUNT);
       000128 0E 2F                  475 	mov	a, #(_off_color + 0)
       00012A BB 0B                  476 	mov	___memcpy_PARM_2+0, a
       00012C 3C 13                  477 	clear	___memcpy_PARM_2+1
@@ -485,11 +485,11 @@
       00013C 04 2F                  485 	mov	a, #0x04
       00013E AA 0B                  486 	mov	_copy_to_buff_PARM_2+0, a
       000140 40 30                  487 	goto	_copy_to_buff
-                                    488 ;	main.c: 112: return;
+                                    488 ;	main.c: 110: return;
       000142 7A 00                  489 	ret
-                                    490 ;	main.c: 113: case 1:
+                                    490 ;	main.c: 111: case 1:
       000144                        491 00102$:
-                                    492 ;	main.c: 114: copy_to_buff(blue_color, LED_COUNT);
+                                    492 ;	main.c: 112: copy_to_buff(blue_color, LED_COUNT);
       000144 05 2F                  493 	mov	a, #(_blue_color + 0)
       000146 BB 0B                  494 	mov	___memcpy_PARM_2+0, a
       000148 3C 13                  495 	clear	___memcpy_PARM_2+1
@@ -503,7 +503,7 @@
       000158 04 2F                  503 	mov	a, #0x04
       00015A AA 0B                  504 	mov	_copy_to_buff_PARM_2+0, a
       00015C 40 38                  505 	call	_copy_to_buff
-                                    506 ;	main.c: 115: bright = bright_blue_color;
+                                    506 ;	main.c: 113: bright = bright_blue_color;
       00015E 2D 2F                  507 	mov	a, #(_update_pattern_bright_10000_19 + 0)
       000160 B9 0B                  508 	mov	___memcpy_PARM_1+0, a
       000162 3A 13                  509 	clear	___memcpy_PARM_1+1
@@ -514,11 +514,11 @@
       00016C BD 0B                  514 	mov	___memcpy_PARM_3+0, a
       00016E 3E 13                  515 	clear	___memcpy_PARM_3+1
       000170 6B 39                  516 	call	___memcpy
-                                    517 ;	main.c: 116: break;
+                                    517 ;	main.c: 114: break;
       000172 D1 30                  518 	goto	00104$
-                                    519 ;	main.c: 117: case 2:
+                                    519 ;	main.c: 115: case 2:
       000174                        520 00103$:
-                                    521 ;	main.c: 118: copy_to_buff(orange_color, LED_COUNT);
+                                    521 ;	main.c: 116: copy_to_buff(orange_color, LED_COUNT);
       000174 02 2F                  522 	mov	a, #(_orange_color + 0)
       000176 BB 0B                  523 	mov	___memcpy_PARM_2+0, a
       000178 3C 13                  524 	clear	___memcpy_PARM_2+1
@@ -532,7 +532,7 @@
       000188 04 2F                  532 	mov	a, #0x04
       00018A AA 0B                  533 	mov	_copy_to_buff_PARM_2+0, a
       00018C 40 38                  534 	call	_copy_to_buff
-                                    535 ;	main.c: 119: bright = bright_orange_color;
+                                    535 ;	main.c: 117: bright = bright_orange_color;
       00018E 2D 2F                  536 	mov	a, #(_update_pattern_bright_10000_19 + 0)
       000190 B9 0B                  537 	mov	___memcpy_PARM_1+0, a
       000192 3A 13                  538 	clear	___memcpy_PARM_1+1
@@ -543,13 +543,13 @@
       00019C BD 0B                  543 	mov	___memcpy_PARM_3+0, a
       00019E 3E 13                  544 	clear	___memcpy_PARM_3+1
       0001A0 6B 39                  545 	call	___memcpy
-                                    546 ;	main.c: 121: }
+                                    546 ;	main.c: 119: }
       0001A2                        547 00104$:
-                                    548 ;	main.c: 123: pattern_step++;
+                                    548 ;	main.c: 121: pattern_step++;
       0001A2 A4 0F                  549 	mov	a, _pattern_step+0
       0001A4 01 28                  550 	add	a, #0x01
       0001A6 A4 0B                  551 	mov	_pattern_step+0, a
-                                    552 ;	main.c: 125: switch (pattern_step)
+                                    552 ;	main.c: 123: switch (pattern_step)
       0001A8 A4 0F                  553 	mov	a, _pattern_step+0
       0001AA 01 2B                  554 	cneqsn	a, #0x01
       0001AC E2 30                  555 	goto	00105$
@@ -570,10 +570,10 @@
       0001C0 0E 31                  570 	goto	00110$
       0001C2                        571 00185$:
       0001C2 0F 31                  572 	goto	00112$
-                                    573 ;	main.c: 127: case 1:
+                                    573 ;	main.c: 125: case 1:
       0001C4                        574 00105$:
-                                    575 ;	main.c: 128: pixel_buff[0] = bright;
-      0001C4 11 2F                  576 	mov	a, #(_pixel_buff + 0)
+                                    575 ;	main.c: 126: pixel_buff[3] = bright;
+      0001C4 1A 2F                  576 	mov	a, #(_pixel_buff + 9)
       0001C6 B9 0B                  577 	mov	___memcpy_PARM_1+0, a
       0001C8 3A 13                  578 	clear	___memcpy_PARM_1+1
       0001CA 2D 2F                  579 	mov	a, #(_update_pattern_bright_10000_19 + 0)
@@ -583,12 +583,12 @@
       0001D2 BD 0B                  583 	mov	___memcpy_PARM_3+0, a
       0001D4 3E 13                  584 	clear	___memcpy_PARM_3+1
       0001D6 6B 31                  585 	goto	___memcpy
-                                    586 ;	main.c: 129: break;
+                                    586 ;	main.c: 127: break;
       0001D8 0F 31                  587 	goto	00112$
-                                    588 ;	main.c: 130: case 3:
+                                    588 ;	main.c: 128: case 3:
       0001DA                        589 00106$:
-                                    590 ;	main.c: 131: pixel_buff[1] = bright;
-      0001DA 14 2F                  591 	mov	a, #(_pixel_buff + 3)
+                                    590 ;	main.c: 129: pixel_buff[2] = bright;
+      0001DA 17 2F                  591 	mov	a, #(_pixel_buff + 6)
       0001DC B9 0B                  592 	mov	___memcpy_PARM_1+0, a
       0001DE 3A 13                  593 	clear	___memcpy_PARM_1+1
       0001E0 2D 2F                  594 	mov	a, #(_update_pattern_bright_10000_19 + 0)
@@ -598,12 +598,12 @@
       0001E8 BD 0B                  598 	mov	___memcpy_PARM_3+0, a
       0001EA 3E 13                  599 	clear	___memcpy_PARM_3+1
       0001EC 6B 31                  600 	goto	___memcpy
-                                    601 ;	main.c: 132: break;
+                                    601 ;	main.c: 130: break;
       0001EE 0F 31                  602 	goto	00112$
-                                    603 ;	main.c: 133: case 4:
+                                    603 ;	main.c: 131: case 4:
       0001F0                        604 00107$:
-                                    605 ;	main.c: 134: pixel_buff[2] = bright;
-      0001F0 17 2F                  606 	mov	a, #(_pixel_buff + 6)
+                                    605 ;	main.c: 132: pixel_buff[1] = bright;
+      0001F0 14 2F                  606 	mov	a, #(_pixel_buff + 3)
       0001F2 B9 0B                  607 	mov	___memcpy_PARM_1+0, a
       0001F4 3A 13                  608 	clear	___memcpy_PARM_1+1
       0001F6 2D 2F                  609 	mov	a, #(_update_pattern_bright_10000_19 + 0)
@@ -613,12 +613,12 @@
       0001FE BD 0B                  613 	mov	___memcpy_PARM_3+0, a
       000200 3E 13                  614 	clear	___memcpy_PARM_3+1
       000202 6B 31                  615 	goto	___memcpy
-                                    616 ;	main.c: 135: break;
+                                    616 ;	main.c: 133: break;
       000204 0F 31                  617 	goto	00112$
-                                    618 ;	main.c: 137: case 7:
+                                    618 ;	main.c: 135: case 7:
       000206                        619 00109$:
-                                    620 ;	main.c: 138: pixel_buff[3] = bright;
-      000206 1A 2F                  621 	mov	a, #(_pixel_buff + 9)
+                                    620 ;	main.c: 136: pixel_buff[0] = bright;
+      000206 11 2F                  621 	mov	a, #(_pixel_buff + 0)
       000208 B9 0B                  622 	mov	___memcpy_PARM_1+0, a
       00020A 3A 13                  623 	clear	___memcpy_PARM_1+1
       00020C 2D 2F                  624 	mov	a, #(_update_pattern_bright_10000_19 + 0)
@@ -628,71 +628,71 @@
       000214 BD 0B                  628 	mov	___memcpy_PARM_3+0, a
       000216 3E 13                  629 	clear	___memcpy_PARM_3+1
       000218 6B 31                  630 	goto	___memcpy
-                                    631 ;	main.c: 139: break;
+                                    631 ;	main.c: 137: break;
       00021A 0F 31                  632 	goto	00112$
-                                    633 ;	main.c: 140: case 10:
+                                    633 ;	main.c: 138: case 10:
       00021C                        634 00110$:
-                                    635 ;	main.c: 141: pattern_step = 0;
+                                    635 ;	main.c: 139: pattern_step = 0;
       00021C 24 13                  636 	clear	_pattern_step+0
-                                    637 ;	main.c: 143: }
+                                    637 ;	main.c: 141: }
       00021E                        638 00112$:
-                                    639 ;	main.c: 144: }
+                                    639 ;	main.c: 142: }
       00021E 7A 00                  640 	ret
-                                    641 ;	main.c: 146: void main(void)
+                                    641 ;	main.c: 144: void main(void)
                                     642 ;	-----------------------------------------
                                     643 ;	 function main
                                     644 ;	-----------------------------------------
       000220                        645 _main:
-                                    646 ;	main.c: 149: __disgint();
+                                    646 ;	main.c: 147: __disgint();
       000220 79 00                  647 	disgint
-                                    648 ;	main.c: 150: CLKMD |= 0x10; // First enable IHRC
+                                    648 ;	main.c: 148: CLKMD |= 0x10; // First enable IHRC
       000222 03 1F                  649 	set1.io	__clkmd, #4
-                                    650 ;	main.c: 151: CLKMD = 0x34;  // Switch to IHRC/2 but leave ILRC on
+                                    650 ;	main.c: 149: CLKMD = 0x34;  // Switch to IHRC/2 but leave ILRC on
       000224 34 2F                  651 	mov	a, #0x34
       000226 83 01                  652 	mov.io	__clkmd, a
-                                    653 ;	main.c: 152: CLKMD &= ~(CLKMD_ENABLE_WATCHDOG);
+                                    653 ;	main.c: 150: CLKMD &= ~(CLKMD_ENABLE_WATCHDOG);
       000228 43 1C                  654 	set0.io	__clkmd, #1
-                                    655 ;	main.c: 153: PAC = LED_bm;     // Pin 5 as out
+                                    655 ;	main.c: 151: PAC = LED_bm;     // Pin 5 as out
       00022A 20 2F                  656 	mov	a, #0x20
       00022C 91 01                  657 	mov.io	__pac, a
-                                    658 ;	main.c: 154: PAPL = BTN_bm;    // Pull Pin 4 low internally
+                                    658 ;	main.c: 152: PAPL = BTN_bm;    // Pull Pin 4 low internally
       00022E 10 2F                  659 	mov	a, #0x10
       000230 93 01                  660 	mov.io	__papl, a
-                                    661 ;	main.c: 155: PAC &= ~(BTN_bm); // Pin 4 as in
+                                    661 ;	main.c: 153: PAC &= ~(BTN_bm); // Pin 4 as in
       000232 11 1D                  662 	set0.io	__pac, #4
-                                    663 ;	main.c: 156: PADIER |= BTN_bm; // Enable digital in
+                                    663 ;	main.c: 154: PADIER |= BTN_bm; // Enable digital in
       000234 0D 1F                  664 	set1.io	__padier, #4
-                                    665 ;	main.c: 159: INTEN = INTEN_TM3;
+                                    665 ;	main.c: 157: INTEN = INTEN_TM3;
       000236 80 2F                  666 	mov	a, #0x80
       000238 84 01                  667 	mov.io	__inten, a
-                                    668 ;	main.c: 162: TM3B = 10;
+                                    668 ;	main.c: 160: TM3B = 10;
       00023A 0A 2F                  669 	mov	a, #0x0a
       00023C B5 01                  670 	mov.io	__tm3b, a
-                                    671 ;	main.c: 163: TM3C = TM3C_CLK_ILRC | TM3C_OUT_DISABLE | TM3C_MODE_PERIOD;
+                                    671 ;	main.c: 161: TM3C = TM3C_CLK_ILRC | TM3C_OUT_DISABLE | TM3C_MODE_PERIOD;
       00023E 40 2F                  672 	mov	a, #0x40
       000240 B2 01                  673 	mov.io	__tm3c, a
-                                    674 ;	main.c: 164: TM3S = TM3S_PRESCALE_DIV64; // should also start the timer
+                                    674 ;	main.c: 162: TM3S = TM3S_PRESCALE_DIV64; // should also start the timer
       000242 60 2F                  675 	mov	a, #0x60
       000244 B4 01                  676 	mov.io	__tm3s, a
-                                    677 ;	main.c: 166: TM2B = 10;
+                                    677 ;	main.c: 164: TM2B = 10;
       000246 0A 2F                  678 	mov	a, #0x0a
       000248 9F 01                  679 	mov.io	__tm2b, a
-                                    680 ;	main.c: 167: TM2C = TM2C_CLK_DISABLE | TM2C_OUT_PA3 | TM3C_MODE_PERIOD;
+                                    680 ;	main.c: 165: TM2C = TM2C_CLK_DISABLE | TM2C_OUT_PA3 | TM3C_MODE_PERIOD;
       00024A 08 2F                  681 	mov	a, #0x08
       00024C 9C 01                  682 	mov.io	__tm2c, a
-                                    683 ;	main.c: 168: TM2S = TM2S_PRESCALE_DIV16;
+                                    683 ;	main.c: 166: TM2S = TM2S_PRESCALE_DIV16;
       00024E 40 2F                  684 	mov	a, #0x40
       000250 9E 01                  685 	mov.io	__tm2s, a
-                                    686 ;	main.c: 170: __engint();
+                                    686 ;	main.c: 168: __engint();
       000252 78 00                  687 	engint
-                                    688 ;	main.c: 172: start_tone_out_startup();
+                                    688 ;	main.c: 170: start_tone_out_startup();
       000254 66 38                  689 	call	_start_tone_out_startup
-                                    690 ;	main.c: 174: while (1)
+                                    690 ;	main.c: 172: while (1)
       000256                        691 00102$:
       000256 2B 31                  692 	goto	00102$
-                                    693 ;	main.c: 176: }
+                                    693 ;	main.c: 174: }
       000258 7A 00                  694 	ret
-                                    695 ;	main.c: 178: void interrupt(void) __interrupt(0)
+                                    695 ;	main.c: 176: void interrupt(void) __interrupt(0)
                                     696 ;	-----------------------------------------
                                     697 ;	 function interrupt
                                     698 ;	-----------------------------------------
@@ -700,36 +700,36 @@
       00025A 72 00                  700 	push	af
       00025C 80 0F                  701 	mov	a, p
       00025E 72 00                  702 	push	af
-                                    703 ;	main.c: 181: if (INTRQ & INTRQ_TM3) // Timer3 interrupt request
+                                    703 ;	main.c: 179: if (INTRQ & INTRQ_TM3) // Timer3 interrupt request
       000260 C5 01                  704 	mov.io	a, __intrq
       000262 80 2C                  705 	and	a, #0x80
       000264 00 2B                  706 	cneqsn	a, #0x00
       000266 67 31                  707 	goto	00116$
       000268                        708 00160$:
-                                    709 ;	main.c: 184: if (PA & BTN_bm)
+                                    709 ;	main.c: 182: if (PA & BTN_bm)
       000268 D0 01                  710 	mov.io	a, __pa
       00026A 10 2C                  711 	and	a, #0x10
       00026C 00 2B                  712 	cneqsn	a, #0x00
       00026E 51 31                  713 	goto	00106$
       000270                        714 00161$:
-                                    715 ;	main.c: 187: if (!button_down)
+                                    715 ;	main.c: 185: if (!button_down)
       000270 A1 0F                  716 	mov	a, _button_down+0
       000272 00 2A                  717 	ceqsn	a, #0x00
       000274 53 31                  718 	goto	00107$
       000276                        719 00162$:
-                                    720 ;	main.c: 189: button_ctr++;
+                                    720 ;	main.c: 187: button_ctr++;
       000276 A0 0F                  721 	mov	a, _button_ctr+0
       000278 01 28                  722 	add	a, #0x01
       00027A A0 0B                  723 	mov	_button_ctr+0, a
-                                    724 ;	main.c: 191: if (button_ctr == BTN_DEBOUNCE_DELAY)
+                                    724 ;	main.c: 189: if (button_ctr == BTN_DEBOUNCE_DELAY)
       00027C A0 0F                  725 	mov	a, _button_ctr+0
       00027E 05 2A                  726 	ceqsn	a, #0x05
       000280 53 31                  727 	goto	00107$
       000282                        728 00163$:
-                                    729 ;	main.c: 193: button_down = 1;
+                                    729 ;	main.c: 191: button_down = 1;
       000282 01 2F                  730 	mov	a, #0x01
       000284 A1 0B                  731 	mov	_button_down+0, a
-                                    732 ;	main.c: 194: pattern_index = (pattern_index + 1) % 3;
+                                    732 ;	main.c: 192: pattern_index = (pattern_index + 1) % 3;
       000286 A3 0F                  733 	mov	a, _pattern_index+0
       000288 01 28                  734 	add	a, #0x01
       00028A B0 0B                  735 	mov	__modsint_PARM_1+0, a
@@ -741,53 +741,53 @@
       000296 33 13                  741 	clear	__modsint_PARM_2+1
       000298 94 39                  742 	call	__modsint
       00029A A3 0B                  743 	mov	_pattern_index+0, a
-                                    744 ;	main.c: 195: pattern_step = 0;
+                                    744 ;	main.c: 193: pattern_step = 0;
       00029C 24 13                  745 	clear	_pattern_step+0
-                                    746 ;	main.c: 196: start_tone_out_button();
+                                    746 ;	main.c: 194: start_tone_out_button();
       00029E 6D 38                  747 	call	_start_tone_out_button
       0002A0 53 31                  748 	goto	00107$
       0002A2                        749 00106$:
-                                    750 ;	main.c: 202: button_ctr = 0;
+                                    750 ;	main.c: 200: button_ctr = 0;
       0002A2 20 13                  751 	clear	_button_ctr+0
-                                    752 ;	main.c: 203: button_down = 0;
+                                    752 ;	main.c: 201: button_down = 0;
       0002A4 21 13                  753 	clear	_button_down+0
       0002A6                        754 00107$:
-                                    755 ;	main.c: 206: pattern_count++;
+                                    755 ;	main.c: 204: pattern_count++;
       0002A6 A2 0F                  756 	mov	a, _pattern_count+0
       0002A8 01 28                  757 	add	a, #0x01
       0002AA A2 0B                  758 	mov	_pattern_count+0, a
-                                    759 ;	main.c: 208: if (pattern_count == PATTERN_UPDATE_DELAY)
+                                    759 ;	main.c: 206: if (pattern_count == PATTERN_UPDATE_DELAY)
       0002AC A2 0F                  760 	mov	a, _pattern_count+0
       0002AE 32 2A                  761 	ceqsn	a, #0x32
       0002B0 5C 31                  762 	goto	00109$
       0002B2                        763 00164$:
-                                    764 ;	main.c: 210: update_pattern();
+                                    764 ;	main.c: 208: update_pattern();
       0002B2 8C 38                  765 	call	_update_pattern
-                                    766 ;	main.c: 211: output_leds();
+                                    766 ;	main.c: 209: output_leds();
       0002B4 79 38                  767 	call	_output_leds
-                                    768 ;	main.c: 212: pattern_count = 0;
+                                    768 ;	main.c: 210: pattern_count = 0;
       0002B6 22 13                  769 	clear	_pattern_count+0
       0002B8                        770 00109$:
-                                    771 ;	main.c: 215: if (tone_time)
+                                    771 ;	main.c: 213: if (tone_time)
       0002B8 A6 0F                  772 	mov	a, _tone_time+0
       0002BA 00 2B                  773 	cneqsn	a, #0x00
       0002BC 66 31                  774 	goto	00113$
       0002BE                        775 00165$:
-                                    776 ;	main.c: 217: tone_out_ctr++;
+                                    776 ;	main.c: 215: tone_out_ctr++;
       0002BE A5 0F                  777 	mov	a, _tone_out_ctr+0
       0002C0 01 28                  778 	add	a, #0x01
       0002C2 A5 0B                  779 	mov	_tone_out_ctr+0, a
-                                    780 ;	main.c: 219: if (tone_out_ctr >= tone_time)
+                                    780 ;	main.c: 217: if (tone_out_ctr >= tone_time)
       0002C4 A5 0F                  781 	mov	a, _tone_out_ctr+0
       0002C6 A6 0C                  782 	sub	a, _tone_time+0
-                                    783 ;	main.c: 221: stop_tone_out();
+                                    783 ;	main.c: 219: stop_tone_out();
       0002C8 40 1A                  784 	t1sn.io	f, c
       0002CA 74 38                  785 	call	_stop_tone_out
       0002CC                        786 00113$:
-                                    787 ;	main.c: 225: INTRQ &= ~INTRQ_TM3; // Clear interrupt flag
+                                    787 ;	main.c: 223: INTRQ &= ~INTRQ_TM3; // Clear interrupt flag
       0002CC C5 1D                  788 	set0.io	__intrq, #7
       0002CE                        789 00116$:
-                                    790 ;	main.c: 227: }
+                                    790 ;	main.c: 225: }
       0002CE 73 00                  791 	pop	af
       0002D0 80 0B                  792 	mov	p, a
       0002D2 73 00                  793 	pop	af

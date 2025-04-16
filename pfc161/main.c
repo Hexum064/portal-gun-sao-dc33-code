@@ -82,7 +82,7 @@ void output_leds()
     __asm__("00010$:");
     __asm__("    idxm	a, p                ;load the byte data from the array into a");
     __asm__("    inc p                      ;inc p to the next address");
-    __asm__("    mov	_byte_t+0, a        ;load the byte data into byte_t");
+    __asm__("    mov	_byte_t, a          ;load the byte data into byte_t");
     __asm__("    mov a, #0x08               ;reset the bit count");
     __asm__("00011$:");
     __asm__("    ;output bit");
@@ -123,17 +123,17 @@ void update_pattern()
     switch (pattern_step)
     {
     case 1:
-        pixel_buff[0] = bright;
+        pixel_buff[3] = bright;
         break;
     case 3:
-        pixel_buff[1] = bright;
+        pixel_buff[2] = bright;
         break;
     case 4:
-        pixel_buff[2] = bright;
+        pixel_buff[1] = bright;
         break;
     case 6:
     case 7:
-        pixel_buff[3] = bright;
+        pixel_buff[0] = bright;
         break;
     case 10:
         pattern_step = 0;
