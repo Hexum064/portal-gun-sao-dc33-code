@@ -4,7 +4,9 @@ IC=pfc161
 PROG_NAME=iflfu_pfc161
 
 all: clean build flash
-	
+
+all-pwr: clean build flash power
+
 clean:
 	rm -rf $(OUTDIR)
 

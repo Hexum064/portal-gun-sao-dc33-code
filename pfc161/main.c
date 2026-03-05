@@ -6,6 +6,7 @@
 
 #define LED_bm 0x20
 #define BTN_bm 0x10
+#define CS_bm 0x80
 #define BTN_DEBOUNCE_DELAY 5
 #define PATTERN_UPDATE_DELAY 50
 #define LED_COUNT 4
@@ -13,6 +14,47 @@
 #define BUTTON_TONE_TIME 5
 #define STARTUP_BOUNDS 10
 #define BUTTON_BOUNDS 5
+#define TOUCH_THRESHOLD 1
+
+#define TS_ENABLE  
+
+// #define DEBUG
+
+#ifdef DEBUG
+#define F_CPU      600000L
+#define TX_PIN 0x08 // Example GPIO pin
+#define BAUD_RATE 9600
+#define BIT_PERIOD  (F_CPU / BAUD_RATE)
+
+// Microsecond delay for SDCC (approximate)
+void delay_cycles(uint16_t cycles) {
+    while (cycles--) {
+        __asm__("nop"); // Adjust based on compiler cycle counts
+    }
+}
+
+void uart_tx_byte(uint16_t data) {
+    // 1. Start Bit (Low)
+    PA &= ~TX_PIN;
+    delay_cycles(BIT_PERIOD);
+
+    // 2. Data Bits (8 bits, LSB first)
+    for (uint8_t i = 0; i < 16; i++) {
+        if (data & 0x01) {
+            PA |= TX_PIN;
+        } else {
+            PA &= ~TX_PIN;
+        }
+        data >>= 1;
+        delay_cycles(BIT_PERIOD);
+    }
+
+    // 3. Stop Bit (High)
+    PA |= TX_PIN;
+    delay_cycles(BIT_PERIOD);
+}
+
+#endif
 
 typedef struct
 {
@@ -40,6 +82,15 @@ volatile uint8_t pattern_index = 0;
 volatile uint8_t pattern_step = 0;
 volatile uint8_t tone_out_ctr = 0;
 volatile uint8_t tone_time = 0;
+volatile uint16_t touch_base = 0;
+
+void touch_init() {
+    // Configure the touch sensing module
+    TS = TS_TP_CLK_IHRC_DIV2 | TS_TP_VREF_VCC05 | TS_DISCHARGE_WAIT_128CLOCKS;
+    TPS2 = TPS2_TOUCH_TYPE_B | TPS2_VREFNONFLOAT_ALWAYS_ON;
+    PAC &= ~(BTN_bm); // Pin 4 as in
+    PADIER &= ~(BTN_bm | CS_bm); // Disable digital input for touch and CS pins
+}
 
 void copy_to_buff(color_t pixel, uint8_t len)
 {
@@ -141,6 +192,17 @@ void update_pattern()
     }
 }
 
+uint16_t read_touch_raw() {
+    // 1. Select channel and enable touch module
+    TKE1 = TKE1_TK6_PA4; // Use PA4 as touch input
+    TKE2 = 0; // Disable other channels
+    TCC = TCC_TK_RUN;
+    
+    while(TCC & TCC_TK_RUN); // Wait for measurement to complete
+
+    return (TKCH << 8) | TKCL; 
+}
+
 void main(void)
 {
 
@@ -149,9 +211,24 @@ void main(void)
     CLKMD = 0x34;  // Switch to IHRC/2 but leave ILRC on
     CLKMD &= ~(CLKMD_ENABLE_WATCHDOG);
     PAC = LED_bm;     // Pin 5 as out
+    
+#ifdef DEBUG
+// Initialize IO
+    for (uint16_t i = 0; i < 65535; i++)
+    {    
+        __asm__("nop"); // Short delay to ensure stable power before configuring pins
+    }
+    PAC |= TX_PIN;  // Set PA.0 as output
+    PA |= TX_PIN;   // Idle High
+#endif
+
+#ifdef TS_ENABLE
+    touch_init();    
+
+#else
     PAPL = BTN_bm;    // Pull Pin 4 low internally
-    PAC &= ~(BTN_bm); // Pin 4 as in
     PADIER |= BTN_bm; // Enable digital in
+#endif
 
     // Enable the interrupt for TM2
     INTEN = INTEN_TM3;
@@ -162,8 +239,12 @@ void main(void)
     TM3S = TM3S_PRESCALE_DIV64; // should also start the timer
 
     TM2B = 10;
-    TM2C = TM2C_CLK_DISABLE | TM2C_OUT_PA3 | TM3C_MODE_PERIOD;
+    TM2C = TM2C_CLK_DISABLE | TM3C_MODE_PERIOD; //| TM2C_OUT_PA3 
     TM2S = TM2S_PRESCALE_DIV16;
+
+#ifdef TS_ENABLE
+    touch_base = read_touch_raw();
+#endif
 
     __engint();
 
@@ -179,7 +260,15 @@ void interrupt(void) __interrupt(0)
     if (INTRQ & INTRQ_TM3) // Timer3 interrupt request
     {
 
+#ifdef TS_ENABLE
+        uint16_t touch_value = read_touch_raw();
+#ifdef DEBUG
+            uart_tx_byte(touch_value);
+#endif        
+        if (touch_value < touch_base - TOUCH_THRESHOLD)
+#else
         if (PA & BTN_bm)
+#endif        
         {
 
             if (!button_down)

@@ -87,22 +87,22 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000033  __tm3ct                            main
      00000034  __tm3s                             main
      00000035  __tm3b                             main
-     00000037  l_DATA                          
      00000039  __ilrcr                            main
-     00000039  s_OSEG                          
      0000003A  __rop                              main
-     00000047  s_SSEG                          
-     0000005A  l_GSINIT                        
-     0000007E  s_GSFINAL                       
-     00000080  s_CODE                          
-     00000390  l_CODE                          
-     00000410  s_CONST                         
+     0000003B  l_DATA                          
+     0000003D  s_OSEG                          
+     0000004B  s_SSEG                          
+     0000005E  l_GSINIT                        
+     00000082  s_GSFINAL                       
+     00000084  s_CODE                          
+     000003C8  l_CODE                          
+     0000044C  s_CONST                         
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-DATA                                00000002    00000037 =          55. bytes (REL,CON)
+DATA                                00000002    0000003B =          59. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -122,25 +122,25 @@ DATA                                00000002    00000037 =          55. bytes (R
      00000024  _pattern_step                      main
      00000025  _tone_out_ctr                      main
      00000026  _tone_time                         main
-     00000027  _copy_to_buff_PARM_1               main
-     0000002A  _copy_to_buff_PARM_2               main
-     00000030  __modsint_PARM_1                   _modsint
-     00000032  __modsint_PARM_2                   _modsint
-
+     00000027  _touch_base                        main
+     00000029  _copy_to_buff_PARM_1               main
+     0000002C  _copy_to_buff_PARM_2               main
+     00000034  __modsint_PARM_1                   _modsint
+     00000036  __modsint_PARM_2                   _modsint
 ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-OSEG                                00000039    0000000E =          14. bytes (REL,OVR)
+OSEG                                0000003D    0000000E =          14. bytes (REL,OVR)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000039  ___memcpy_PARM_1                   __memcpy
-     00000039  __moduint_PARM_1                   _moduint
-     0000003B  ___memcpy_PARM_2                   __memcpy
-     0000003B  __moduint_PARM_2                   _moduint
-     0000003D  ___memcpy_PARM_3                   __memcpy
+     0000003D  ___memcpy_PARM_1                   __memcpy
+     0000003D  __moduint_PARM_1                   _moduint
+     0000003F  ___memcpy_PARM_2                   __memcpy
+     0000003F  __moduint_PARM_2                   _moduint
+     00000041  ___memcpy_PARM_3                   __memcpy
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
 Hexadecimal  [32-Bits]
@@ -158,7 +158,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-SSEG                                00000047    00000001 =           1. bytes (REL,CON)
+SSEG                                0000004B    00000001 =           1. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -185,7 +185,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSINIT                              00000024    0000005A =          90. bytes (REL,CON)
+GSINIT                              00000024    0000005E =          94. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -194,7 +194,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSFINAL                             0000007E    00000002 =           2. bytes (REL,CON)
+GSFINAL                             00000082    00000002 =           2. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -223,24 +223,25 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                00000080    00000390 =         912. bytes (REL,CON)
+CODE                                00000084    000003C8 =         968. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000080  _copy_to_buff                      main
-     000000CC  _start_tone_out_startup            main
-     000000DA  _start_tone_out_button             main
-     000000E8  _stop_tone_out                     main
-     000000F2  _output_leds                       main
-     00000118  _update_pattern                    main
-     00000220  _main                              main
-     0000025A  _interrupt                         main
-     000002D6  ___memcpy                          __memcpy
-     00000328  __modsint                          _modsint
-     0000039A  __moduint                          _moduint
-     000003F6  ___sdcc_external_startup           _startup
-     000003F8  __gptrget                          __gptrget
-
+     00000084  _touch_init                        main
+     00000096  _copy_to_buff                      main
+     000000E2  _start_tone_out_startup            main
+     000000EE  _start_tone_out_button             main
+     000000FA  _stop_tone_out                     main
+     00000104  _output_leds                       main
+     0000012A  _update_pattern                    main
+     00000232  _read_touch_raw                    main
+     0000024A  _main                              main
+     00000286  _interrupt                         main
+     00000312  ___memcpy                          __memcpy
+     00000364  __modsint                          _modsint
+     000003D6  __moduint                          _moduint
+     00000432  ___sdcc_external_startup           _startup
+     00000434  __gptrget                          __gptrget
 ASxxxx Linker V03.00/V05.40 + sdld,  page 14.
 
 Files Linked                              [ module(s) ]

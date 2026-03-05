@@ -77,33 +77,36 @@ Symbol Table
   1 _byte_ctr                                                      00001D GR
   1 _byte_t                                                        00001C GR
   1 _bytes                                                         00001B GR
-  F _copy_to_buff                                                  000000 GR
-  1 _copy_to_buff_PARM_1                                           000025 GR
-  1 _copy_to_buff_PARM_2                                           000028 GR
-  1 _copy_to_buff_sloc0_1_0                                        000029 R
-  1 _copy_to_buff_sloc1_1_0                                        00002A R
-  F _interrupt                                                     0001DA GR
-  F _main                                                          0001A0 GR
+  F _copy_to_buff                                                  000012 GR
+  1 _copy_to_buff_PARM_1                                           000027 GR
+  1 _copy_to_buff_PARM_2                                           00002A GR
+  1 _copy_to_buff_sloc0_1_0                                        00002B R
+  1 _copy_to_buff_sloc1_1_0                                        00002C R
+  F _interrupt                                                     000202 GR
+  1 _interrupt_sloc2_1_0                                           000030 R
+  F _main                                                          0001C6 GR
   1 _off_color                                                     00000C GR
   1 _orange_color                                                  000000 GR
-  F _output_leds                                                   000072 GR
+  F _output_leds                                                   000080 GR
   1 _pattern_count                                                 000020 GR
   1 _pattern_index                                                 000021 GR
   1 _pattern_step                                                  000022 GR
   1 _pixel_buff                                                    00000F GR
-  F _start_tone_out_button                                         00005A GR
-  F _start_tone_out_startup                                        00004C GR
-  F _stop_tone_out                                                 000068 GR
+  F _read_touch_raw                                                0001AE GR
+  F _start_tone_out_button                                         00006A GR
+  F _start_tone_out_startup                                        00005E GR
+  F _stop_tone_out                                                 000076 GR
   1 _tone_out_ctr                                                  000023 GR
   1 _tone_time                                                     000024 GR
-  F _update_pattern                                                000098 GR
-  1 _update_pattern_bright_10000_19                                00002B R
+  1 _touch_base                                                    000025 GR
+  F _touch_init                                                    000000 GR
+  F _update_pattern                                                0000A6 GR
+  1 _update_pattern_bright_10000_20                                00002D R
     l_DATA                                                         ****** GX
     l_OSEG                                                         ****** GX
   D p                                                              000000 GR
     s_DATA                                                         ****** GX
     s_OSEG                                                         ****** GX
-
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Padauk 14)                Page 3
 Hexadecimal [24-Bits]
@@ -111,7 +114,7 @@ Hexadecimal [24-Bits]
 Area Table
 
    0 _CODE                                      size      0   flags    0
-   1 DATA                                       size     2E   flags    0
+   1 DATA                                       size     32   flags    0
    2 OSEG                                       size      0   flags    4
    3 RSEG                                       size      0   flags    8
    4 RSEG0                                      size      2   flags    8
@@ -120,12 +123,12 @@ Area Table
    7 HOME                                       size      2   flags    0
    8 HEADER                                     size      0   flags    8
    9 HEADER1                                    size      2   flags    8
-   A GSINIT                                     size     5A   flags    0
+   A GSINIT                                     size     5E   flags    0
    B GSFINAL                                    size      2   flags    0
    C PREG                                       size      0   flags    8
    D PREG2                                      size      2   flags    8
    E HEADER3                                    size     14   flags    8
-   F CODE                                       size    256   flags    0
+   F CODE                                       size    28E   flags    0
   10 CONST                                      size      0   flags    0
   11 CABS                                       size      0   flags    8
 

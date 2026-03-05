@@ -489,6 +489,8 @@ __sfr16          _t16c;
 #define TPS2_VREFNONFLOAT_ALWAYS_ON  0x01
 #define TPS2_VREFNONFLOAT_64CYCLES   0x02
 #define TPS2_VREFNONFLOAT_128CYCLES  0x03
+#define TPS2_TOUCH_TYPE_A            0x00
+#define TPS2_TOUCH_TYPE_B            0x40
 
 //lvdc definitions
 #define LVDC_VDD_UP                  0x00
