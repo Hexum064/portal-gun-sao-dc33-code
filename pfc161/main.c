@@ -4,6 +4,8 @@
 
 #include "easypdk/pfc161.h"
 
+//NOTE: Touch Cap = 470pF
+
 #define LED_bm 0x20
 #define BTN_bm 0x10
 #define CS_bm 0x80
@@ -14,7 +16,8 @@
 #define BUTTON_TONE_TIME 5
 #define STARTUP_BOUNDS 10
 #define BUTTON_BOUNDS 5
-#define TOUCH_THRESHOLD 1
+#define TOUCH_THRESHOLD 5
+#define RESAMPLE_BASE_COUNT 100
 
 #define TS_ENABLE  
 
@@ -83,6 +86,8 @@ volatile uint8_t pattern_step = 0;
 volatile uint8_t tone_out_ctr = 0;
 volatile uint8_t tone_time = 0;
 volatile uint16_t touch_base = 0;
+volatile uint16_t last_touch = 0;
+volatile uint8_t resample_count = 0;
 
 void touch_init() {
     // Configure the touch sensing module
@@ -262,6 +267,19 @@ void interrupt(void) __interrupt(0)
 
 #ifdef TS_ENABLE
         uint16_t touch_value = read_touch_raw();
+
+        if (touch_value == last_touch){
+            resample_count++;
+        } else {
+            resample_count = 0;
+            last_touch = touch_value;
+        }
+
+        if (resample_count >= RESAMPLE_BASE_COUNT) {
+            touch_base = touch_value;
+            resample_count = 0;
+        }
+
 #ifdef DEBUG
             uart_tx_byte(touch_value);
 #endif        
