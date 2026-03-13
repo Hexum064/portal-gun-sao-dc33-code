@@ -10,7 +10,7 @@
 #define BTN_bm 0x10
 #define CS_bm 0x80
 #define BTN_DEBOUNCE_DELAY 5
-#define PATTERN_UPDATE_DELAY 50
+#define PATTERN_UPDATE_DELAY 25
 #define LED_COUNT 4
 #define STARTUP_TONE_TIME 10
 #define BUTTON_TONE_TIME 5
@@ -66,8 +66,8 @@ typedef struct
     uint8_t b;
 } color_t;
 
-color_t orange_color = {.r = 64, .g = 16, .b = 0};
-color_t blue_color = {.r = 0, .g = 0, .b = 128};
+color_t orange_color = {.r = 32, .g = 8, .b = 0};
+color_t blue_color = {.r = 0, .g = 0, .b = 64};
 color_t bright_orange_color = {.r = 80, .g = 32, .b = 16};
 color_t bright_blue_color = {.r = 16, .g = 16, .b = 128};
 color_t off_color = {.r = 0, .g = 0, .b = 0};
