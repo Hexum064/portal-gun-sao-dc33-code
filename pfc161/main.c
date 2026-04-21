@@ -31,17 +31,17 @@
 
 #define STATE_1_DELAY_ms 200
 #define STATE_2_DELAY_ms 100
-#define STATE_3_DELAY_ms 050
+#define STATE_3_DELAY_ms 100
 #define STATE_4_DELAY_ms 200
 #define STATE_5_DELAY_ms 200
 #define STATE_6_DELAY_ms 200
 #define STATE_7_DELAY_ms 1000
 
 #define LED_UPDATE_DELAY_ms 50
-#define TOUCH_THRESHOLD 5
-#define RESAMPLE_BASE_COUNT 100
+#define TOUCH_THRESHOLD 6
+#define RESAMPLE_BASE_COUNT 300
 
-// #define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 #define F_CPU 600000L
@@ -145,7 +145,7 @@ volatile uint16_t state_update_delay_ms_cnt = 0;
 
 volatile uint16_t touch_base = 0;
 volatile uint16_t last_touch = 0;
-volatile uint8_t resample_count = 0;
+volatile uint16_t resample_count = 0;
 
 void touch_init()
 {
@@ -215,16 +215,9 @@ uint16_t read_touch_raw()
 
 void state_check()
 {
+
     switch (step)
     {
-    default:
-    case NONE:
-        pixel_buff[0] = off_color;
-        pixel_buff[1] = off_color;
-        pixel_buff[2] = off_color;
-        pixel_buff[3] = off_color;
-        output_leds();
-        break;
     case STEP_1:
         pixel_buff[3] = highlight_color;
         pixel_buff[2] = base_color;
@@ -268,6 +261,14 @@ void state_check()
         state_update_delay_ms_cnt = STATE_7_DELAY_ms;
         step = STEP_1;
         break;
+    default:
+    case NONE:
+        pixel_buff[0] = off_color;
+        pixel_buff[1] = off_color;
+        pixel_buff[2] = off_color;
+        pixel_buff[3] = off_color;
+        output_leds();
+        break;
     }
 }
 
@@ -306,31 +307,32 @@ void button_check()
 {
     uint16_t touch_value = read_touch_raw();
 
-    if (touch_value == last_touch)
-    {
-        resample_count++;
-    }
-    else
-    {
-        resample_count = 0;
-        last_touch = touch_value;
-    }
-
-    if (resample_count >= RESAMPLE_BASE_COUNT)
-    {
-        touch_base = touch_value;
-        resample_count = 0;
-    }
-
 #ifdef DEBUG
-    uart_tx_byte(touch_value);
+            uart_tx_byte(touch_value);
 #endif
 
-    if (touch_value < touch_base - TOUCH_THRESHOLD)
+    // if (touch_value == last_touch)
+    // {
+    //     resample_count++;
+    // }
+    // else
+    // {
+    //     resample_count = 0;
+    //     last_touch = touch_value;
+    // }
+
+    // if (resample_count >= RESAMPLE_BASE_COUNT)
+    // {
+    //     touch_base = touch_value;
+    //     resample_count = 0;
+    // }
+    
+    if (touch_value < TOUCH_THRESHOLD)
     {
 
         if (!button_down)
         {
+
             button_down = 1;
             handle_state_update();
             state_check();
@@ -411,4 +413,3 @@ void main(void)
         }
     }
 }
-

@@ -13,6 +13,7 @@
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
+	.globl _delay_cycles_PARM_1
 	.globl _off_color
 	.globl _blue_highlight_color
 	.globl _blue_base_color
@@ -29,6 +30,8 @@
 	.globl _led_init
 	.globl _sys_clk_init
 	.globl _touch_init
+	.globl _uart_tx_byte
+	.globl _delay_cycles
 	.globl __t16c
 	.globl __rop
 	.globl __ilrcr
@@ -93,6 +96,7 @@
 	.globl _step
 	.globl _highlight_color
 	.globl _base_color
+	.globl _uart_tx_byte_PARM_1
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -148,6 +152,10 @@ __t16c::
 ; ram data
 ;--------------------------------------------------------
 	.area DATA
+_uart_tx_byte_PARM_1:
+	.ds 2
+_uart_tx_byte_sloc1_1_0:
+	.ds 1
 _base_color::
 	.ds 3
 _highlight_color::
@@ -185,13 +193,9 @@ _touch_base::
 _last_touch::
 	.ds 2
 _resample_count::
-	.ds 1
-_button_check_sloc0_1_0:
 	.ds 2
-_button_check_sloc1_1_0:
+_button_check_sloc2_1_0:
 	.ds 2
-_handle_tick_sloc2_1_0:
-	.ds 1
 _handle_tick_sloc3_1_0:
 	.ds 1
 _handle_tick_sloc4_1_0:
@@ -200,9 +204,18 @@ _handle_tick_sloc5_1_0:
 	.ds 1
 _handle_tick_sloc6_1_0:
 	.ds 1
+_handle_tick_sloc7_1_0:
+	.ds 1
+_main_sloc8_1_0:
+	.ds 2
 ;--------------------------------------------------------
 ; overlayable items in ram
 ;--------------------------------------------------------
+	.area	OSEG (OVR,DATA)
+_delay_cycles_PARM_1:
+	.ds 2
+_delay_cycles_sloc0_1_0:
+	.ds 2
 ;--------------------------------------------------------
 ; Stack segment in internal ram
 ;--------------------------------------------------------
@@ -293,8 +306,9 @@ __sdcc_init_data:
 ;	main.c: 147: volatile uint16_t last_touch = 0;
 	clear	_last_touch+0
 	clear	_last_touch+1
-;	main.c: 148: volatile uint8_t resample_count = 0;
+;	main.c: 148: volatile uint16_t resample_count = 0;
 	clear	_resample_count+0
+	clear	_resample_count+1
 	.area GSFINAL
 	goto	__sdcc_program_startup
 ;--------------------------------------------------------
@@ -309,6 +323,86 @@ __sdcc_program_startup:
 ; code
 ;--------------------------------------------------------
 	.area CODE
+;	main.c: 53: void delay_cycles(uint16_t cycles)
+;	-----------------------------------------
+;	 function delay_cycles
+;	-----------------------------------------
+_delay_cycles:
+;	main.c: 55: while (cycles--)
+	mov	a, _delay_cycles_PARM_1+0
+	mov	_delay_cycles_sloc0_1_0+0, a
+	mov	a, _delay_cycles_PARM_1+1
+	mov	_delay_cycles_sloc0_1_0+1, a
+00101$:
+	mov	a, _delay_cycles_sloc0_1_0+1
+	mov	p, a
+	mov	a, _delay_cycles_sloc0_1_0+0
+	dec	_delay_cycles_sloc0_1_0+0
+	subc	_delay_cycles_sloc0_1_0+1
+	or	a, p
+	cneqsn	a, #0x00
+	ret
+00119$:
+;	main.c: 57: __asm__("nop"); // Adjust based on compiler cycle counts
+	nop
+	goto	00101$
+;	main.c: 59: }
+	ret
+;	main.c: 61: void uart_tx_byte(uint16_t data)
+;	-----------------------------------------
+;	 function uart_tx_byte
+;	-----------------------------------------
+_uart_tx_byte:
+;	main.c: 64: PA &= ~TX_PIN;
+	set0.io	__pa, #3
+;	main.c: 65: delay_cycles(BIT_PERIOD);
+	mov	a, #0x3e
+	mov	_delay_cycles_PARM_1+0, a
+	clear	_delay_cycles_PARM_1+1
+	call	_delay_cycles
+;	main.c: 68: for (uint8_t i = 0; i < 16; i++)
+	clear	_uart_tx_byte_sloc1_1_0+0
+00106$:
+	mov	a, _uart_tx_byte_sloc1_1_0+0
+	sub	a, #0x10
+	t1sn.io	f, c
+	goto	00104$
+00129$:
+;	main.c: 70: if (data & 0x01)
+	mov	a, _uart_tx_byte_PARM_1+0
+	mov	p, a
+	mov	a, _uart_tx_byte_PARM_1+1
+	t1sn	p, #0
+	goto	00102$
+00130$:
+;	main.c: 72: PA |= TX_PIN;
+	set1.io	__pa, #3
+	goto	00103$
+00102$:
+;	main.c: 76: PA &= ~TX_PIN;
+	set0.io	__pa, #3
+00103$:
+;	main.c: 78: data >>= 1;
+	sr	_uart_tx_byte_PARM_1+1
+	src	_uart_tx_byte_PARM_1+0
+;	main.c: 79: delay_cycles(BIT_PERIOD);
+	mov	a, #0x3e
+	mov	_delay_cycles_PARM_1+0, a
+	clear	_delay_cycles_PARM_1+1
+	call	_delay_cycles
+;	main.c: 68: for (uint8_t i = 0; i < 16; i++)
+	inc	_uart_tx_byte_sloc1_1_0+0
+	goto	00106$
+00104$:
+;	main.c: 83: PA |= TX_PIN;
+	set1.io	__pa, #3
+;	main.c: 84: delay_cycles(BIT_PERIOD);
+	mov	a, #0x3e
+	mov	_delay_cycles_PARM_1+0, a
+	clear	_delay_cycles_PARM_1+1
+	goto	_delay_cycles
+;	main.c: 85: }
+	ret
 ;	main.c: 150: void touch_init()
 ;	-----------------------------------------
 ;	 function touch_init
@@ -442,80 +536,26 @@ _read_touch_raw:
 ;	 function state_check
 ;	-----------------------------------------
 _state_check:
-;	main.c: 218: switch (step)
+;	main.c: 219: switch (step)
 	mov	a, _step+0
 	ceqsn	a, #0x08
 	t1sn.io	f, c
 00119$:
-	goto	00102$
+	goto	00109$
 00120$:
 	add	a, #0x01
 	pcadd	a
+	goto	#00109$
+	goto	#00101$
 	goto	#00102$
 	goto	#00103$
 	goto	#00104$
 	goto	#00105$
 	goto	#00106$
 	goto	#00107$
-	goto	#00108$
-	goto	#00109$
-;	main.c: 221: case NONE:
-00102$:
-;	main.c: 222: pixel_buff[0] = off_color;
-	mov	a, #(_pixel_buff + 0)
-	mov	___memcpy_PARM_1+0, a
-	clear	___memcpy_PARM_1+1
-	mov	a, #<(_off_color + 0)
-	mov	___memcpy_PARM_2+0, a
-	mov	a, #>(_off_color + 0x8000 + 0)
-	mov	___memcpy_PARM_2+1, a
-	mov	a, #0x03
-	mov	___memcpy_PARM_3+0, a
-	clear	___memcpy_PARM_3+1
-	call	___memcpy
-;	main.c: 223: pixel_buff[1] = off_color;
-	mov	a, #(_pixel_buff + 3)
-	mov	___memcpy_PARM_1+0, a
-	clear	___memcpy_PARM_1+1
-	mov	a, #<(_off_color + 0)
-	mov	___memcpy_PARM_2+0, a
-	mov	a, #>(_off_color + 0x8000 + 0)
-	mov	___memcpy_PARM_2+1, a
-	mov	a, #0x03
-	mov	___memcpy_PARM_3+0, a
-	clear	___memcpy_PARM_3+1
-	call	___memcpy
-;	main.c: 224: pixel_buff[2] = off_color;
-	mov	a, #(_pixel_buff + 6)
-	mov	___memcpy_PARM_1+0, a
-	clear	___memcpy_PARM_1+1
-	mov	a, #<(_off_color + 0)
-	mov	___memcpy_PARM_2+0, a
-	mov	a, #>(_off_color + 0x8000 + 0)
-	mov	___memcpy_PARM_2+1, a
-	mov	a, #0x03
-	mov	___memcpy_PARM_3+0, a
-	clear	___memcpy_PARM_3+1
-	call	___memcpy
-;	main.c: 225: pixel_buff[3] = off_color;
-	mov	a, #(_pixel_buff + 9)
-	mov	___memcpy_PARM_1+0, a
-	clear	___memcpy_PARM_1+1
-	mov	a, #<(_off_color + 0)
-	mov	___memcpy_PARM_2+0, a
-	mov	a, #>(_off_color + 0x8000 + 0)
-	mov	___memcpy_PARM_2+1, a
-	mov	a, #0x03
-	mov	___memcpy_PARM_3+0, a
-	clear	___memcpy_PARM_3+1
-	call	___memcpy
-;	main.c: 226: output_leds();
-	goto	_output_leds
-;	main.c: 227: break;
-	ret
-;	main.c: 228: case STEP_1:
-00103$:
-;	main.c: 229: pixel_buff[3] = highlight_color;
+;	main.c: 221: case STEP_1:
+00101$:
+;	main.c: 222: pixel_buff[3] = highlight_color;
 	mov	a, #(_pixel_buff + 9)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -526,7 +566,7 @@ _state_check:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 230: pixel_buff[2] = base_color;
+;	main.c: 223: pixel_buff[2] = base_color;
 	mov	a, #(_pixel_buff + 6)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -537,7 +577,7 @@ _state_check:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 231: pixel_buff[1] = base_color;
+;	main.c: 224: pixel_buff[1] = base_color;
 	mov	a, #(_pixel_buff + 3)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -548,7 +588,7 @@ _state_check:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 232: pixel_buff[0] = base_color;
+;	main.c: 225: pixel_buff[0] = base_color;
 	mov	a, #(_pixel_buff + 0)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -559,38 +599,38 @@ _state_check:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 233: fades[3] = FADE_STEPS;
+;	main.c: 226: fades[3] = FADE_STEPS;
 	mov	a, #0x08
 	mov	_fades+3, a
-;	main.c: 234: fades[2] = 0;
+;	main.c: 227: fades[2] = 0;
 	clear	_fades+2
-;	main.c: 235: fades[1] = 0;
+;	main.c: 228: fades[1] = 0;
 	clear	_fades+1
-;	main.c: 236: fades[0] = 0;
+;	main.c: 229: fades[0] = 0;
 	clear	_fades+0
-;	main.c: 237: state_update_delay_ms_cnt = STATE_1_DELAY_ms;
+;	main.c: 230: state_update_delay_ms_cnt = STATE_1_DELAY_ms;
 	mov	a, #0xc8
 	mov	_state_update_delay_ms_cnt+0, a
 	clear	_state_update_delay_ms_cnt+1
-;	main.c: 238: step = STEP_2;
+;	main.c: 231: step = STEP_2;
 	mov	a, #0x02
 	mov	_step+0, a
-;	main.c: 239: break;
+;	main.c: 232: break;
 	ret
-;	main.c: 241: case STEP_2:
-00104$:
-;	main.c: 242: state_update_delay_ms_cnt = STATE_2_DELAY_ms;
+;	main.c: 234: case STEP_2:
+00102$:
+;	main.c: 235: state_update_delay_ms_cnt = STATE_2_DELAY_ms;
 	mov	a, #0x64
 	mov	_state_update_delay_ms_cnt+0, a
 	clear	_state_update_delay_ms_cnt+1
-;	main.c: 243: step = STEP_3;
+;	main.c: 236: step = STEP_3;
 	mov	a, #0x03
 	mov	_step+0, a
-;	main.c: 244: break;
+;	main.c: 237: break;
 	ret
-;	main.c: 245: case STEP_3:
-00105$:
-;	main.c: 246: pixel_buff[2] = highlight_color;
+;	main.c: 238: case STEP_3:
+00103$:
+;	main.c: 239: pixel_buff[2] = highlight_color;
 	mov	a, #(_pixel_buff + 6)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -601,21 +641,21 @@ _state_check:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 247: fades[2] = FADE_STEPS;
+;	main.c: 240: fades[2] = FADE_STEPS;
 	mov	a, #0x08
 	mov	_fades+2, a
-;	main.c: 248: state_update_delay_ms_cnt = STATE_3_DELAY_ms;
-	mov	a, #0x28
+;	main.c: 241: state_update_delay_ms_cnt = STATE_3_DELAY_ms;
+	mov	a, #0x64
 	mov	_state_update_delay_ms_cnt+0, a
 	clear	_state_update_delay_ms_cnt+1
-;	main.c: 249: step = STEP_4;
+;	main.c: 242: step = STEP_4;
 	mov	a, #0x04
 	mov	_step+0, a
-;	main.c: 250: break;
+;	main.c: 243: break;
 	ret
-;	main.c: 251: case STEP_4:
-00106$:
-;	main.c: 252: pixel_buff[1] = highlight_color;
+;	main.c: 244: case STEP_4:
+00104$:
+;	main.c: 245: pixel_buff[1] = highlight_color;
 	mov	a, #(_pixel_buff + 3)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -626,32 +666,32 @@ _state_check:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 253: fades[1] = FADE_STEPS;
+;	main.c: 246: fades[1] = FADE_STEPS;
 	mov	a, #0x08
 	mov	_fades+1, a
-;	main.c: 254: state_update_delay_ms_cnt = STATE_4_DELAY_ms;
+;	main.c: 247: state_update_delay_ms_cnt = STATE_4_DELAY_ms;
 	mov	a, #0xc8
 	mov	_state_update_delay_ms_cnt+0, a
 	clear	_state_update_delay_ms_cnt+1
-;	main.c: 255: step = STEP_5;
+;	main.c: 248: step = STEP_5;
 	mov	a, #0x05
 	mov	_step+0, a
-;	main.c: 256: break;
+;	main.c: 249: break;
 	ret
-;	main.c: 257: case STEP_5:
-00107$:
-;	main.c: 258: state_update_delay_ms_cnt = STATE_5_DELAY_ms;
+;	main.c: 250: case STEP_5:
+00105$:
+;	main.c: 251: state_update_delay_ms_cnt = STATE_5_DELAY_ms;
 	mov	a, #0xc8
 	mov	_state_update_delay_ms_cnt+0, a
 	clear	_state_update_delay_ms_cnt+1
-;	main.c: 259: step = STEP_6;
+;	main.c: 252: step = STEP_6;
 	mov	a, #0x06
 	mov	_step+0, a
-;	main.c: 260: break;
+;	main.c: 253: break;
 	ret
-;	main.c: 261: case STEP_6:
-00108$:
-;	main.c: 262: pixel_buff[0] = highlight_color;
+;	main.c: 254: case STEP_6:
+00106$:
+;	main.c: 255: pixel_buff[0] = highlight_color;
 	mov	a, #(_pixel_buff + 0)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -662,37 +702,91 @@ _state_check:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 263: fades[0] = FADE_STEPS;
+;	main.c: 256: fades[0] = FADE_STEPS;
 	mov	a, #0x08
 	mov	_fades+0, a
-;	main.c: 264: state_update_delay_ms_cnt = STATE_6_DELAY_ms;
+;	main.c: 257: state_update_delay_ms_cnt = STATE_6_DELAY_ms;
 	mov	a, #0xc8
 	mov	_state_update_delay_ms_cnt+0, a
 	clear	_state_update_delay_ms_cnt+1
-;	main.c: 265: step = STEP_7;
+;	main.c: 258: step = STEP_7;
 	mov	a, #0x07
 	mov	_step+0, a
-;	main.c: 266: break;
+;	main.c: 259: break;
 	ret
-;	main.c: 267: case STEP_7:
-00109$:
-;	main.c: 268: state_update_delay_ms_cnt = STATE_7_DELAY_ms;
+;	main.c: 260: case STEP_7:
+00107$:
+;	main.c: 261: state_update_delay_ms_cnt = STATE_7_DELAY_ms;
 	mov	a, #0xe8
 	mov	_state_update_delay_ms_cnt+0, a
 	mov	a, #0x03
 	mov	_state_update_delay_ms_cnt+1, a
-;	main.c: 269: step = STEP_1;
+;	main.c: 262: step = STEP_1;
 	mov	a, #0x01
 	mov	_step+0, a
-;	main.c: 271: }
-;	main.c: 272: }
+;	main.c: 263: break;
 	ret
-;	main.c: 274: void handle_state_update()
+;	main.c: 265: case NONE:
+00109$:
+;	main.c: 266: pixel_buff[0] = off_color;
+	mov	a, #(_pixel_buff + 0)
+	mov	___memcpy_PARM_1+0, a
+	clear	___memcpy_PARM_1+1
+	mov	a, #<(_off_color + 0)
+	mov	___memcpy_PARM_2+0, a
+	mov	a, #>(_off_color + 0x8000 + 0)
+	mov	___memcpy_PARM_2+1, a
+	mov	a, #0x03
+	mov	___memcpy_PARM_3+0, a
+	clear	___memcpy_PARM_3+1
+	call	___memcpy
+;	main.c: 267: pixel_buff[1] = off_color;
+	mov	a, #(_pixel_buff + 3)
+	mov	___memcpy_PARM_1+0, a
+	clear	___memcpy_PARM_1+1
+	mov	a, #<(_off_color + 0)
+	mov	___memcpy_PARM_2+0, a
+	mov	a, #>(_off_color + 0x8000 + 0)
+	mov	___memcpy_PARM_2+1, a
+	mov	a, #0x03
+	mov	___memcpy_PARM_3+0, a
+	clear	___memcpy_PARM_3+1
+	call	___memcpy
+;	main.c: 268: pixel_buff[2] = off_color;
+	mov	a, #(_pixel_buff + 6)
+	mov	___memcpy_PARM_1+0, a
+	clear	___memcpy_PARM_1+1
+	mov	a, #<(_off_color + 0)
+	mov	___memcpy_PARM_2+0, a
+	mov	a, #>(_off_color + 0x8000 + 0)
+	mov	___memcpy_PARM_2+1, a
+	mov	a, #0x03
+	mov	___memcpy_PARM_3+0, a
+	clear	___memcpy_PARM_3+1
+	call	___memcpy
+;	main.c: 269: pixel_buff[3] = off_color;
+	mov	a, #(_pixel_buff + 9)
+	mov	___memcpy_PARM_1+0, a
+	clear	___memcpy_PARM_1+1
+	mov	a, #<(_off_color + 0)
+	mov	___memcpy_PARM_2+0, a
+	mov	a, #>(_off_color + 0x8000 + 0)
+	mov	___memcpy_PARM_2+1, a
+	mov	a, #0x03
+	mov	___memcpy_PARM_3+0, a
+	clear	___memcpy_PARM_3+1
+	call	___memcpy
+;	main.c: 270: output_leds();
+	goto	_output_leds
+;	main.c: 272: }
+;	main.c: 273: }
+	ret
+;	main.c: 275: void handle_state_update()
 ;	-----------------------------------------
 ;	 function handle_state_update
 ;	-----------------------------------------
 _handle_state_update:
-;	main.c: 277: switch (state)
+;	main.c: 278: switch (state)
 	mov	a, _state+0
 	cneqsn	a, #0x00
 	goto	00102$
@@ -703,26 +797,26 @@ _handle_state_update:
 	cneqsn	a, #0x02
 	goto	00104$
 00125$:
-;	main.c: 280: case OFF:
+;	main.c: 281: case OFF:
 00102$:
-;	main.c: 281: step = NONE;
+;	main.c: 282: step = NONE;
 	clear	_step+0
-;	main.c: 282: state = BLUE;
+;	main.c: 283: state = BLUE;
 	mov	a, #0x01
 	mov	_state+0, a
-;	main.c: 283: break;
+;	main.c: 284: break;
 	ret
-;	main.c: 284: case BLUE:
+;	main.c: 285: case BLUE:
 00103$:
-;	main.c: 285: r_step = BLUE_R_STEP;
-;	main.c: 286: g_step = BLUE_G_STEP;
+;	main.c: 286: r_step = BLUE_R_STEP;
+;	main.c: 287: g_step = BLUE_G_STEP;
 	mov a, #0x02
 	mov  _r_step+0, a
 	mov	_g_step+0, a
-;	main.c: 287: b_step = BLUE_B_STEP;
+;	main.c: 288: b_step = BLUE_B_STEP;
 	mov	a, #0x08
 	mov	_b_step+0, a
-;	main.c: 288: highlight_color = blue_highlight_color;
+;	main.c: 289: highlight_color = blue_highlight_color;
 	mov	a, #(_highlight_color + 0)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -734,7 +828,7 @@ _handle_state_update:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 289: base_color = blue_base_color;
+;	main.c: 290: base_color = blue_base_color;
 	mov	a, #(_base_color + 0)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -746,26 +840,26 @@ _handle_state_update:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 290: step = STEP_1;
+;	main.c: 291: step = STEP_1;
 	mov	a, #0x01
 	mov	_step+0, a
-;	main.c: 291: state = ORANGE;
+;	main.c: 292: state = ORANGE;
 	mov	a, #0x02
 	mov	_state+0, a
-;	main.c: 292: break;
+;	main.c: 293: break;
 	ret
-;	main.c: 293: case ORANGE:
+;	main.c: 294: case ORANGE:
 00104$:
-;	main.c: 294: r_step = ORANGE_R_STEP;
+;	main.c: 295: r_step = ORANGE_R_STEP;
 	mov	a, #0x0a
 	mov	_r_step+0, a
-;	main.c: 295: g_step = ORANGE_G_STEP;
+;	main.c: 296: g_step = ORANGE_G_STEP;
 	mov	a, #0x04
 	mov	_g_step+0, a
-;	main.c: 296: b_step = ORANGE_B_STEP;
+;	main.c: 297: b_step = ORANGE_B_STEP;
 	mov	a, #0x02
 	mov	_b_step+0, a
-;	main.c: 297: highlight_color = orange_highlight_color;
+;	main.c: 298: highlight_color = orange_highlight_color;
 	mov	a, #(_highlight_color + 0)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -777,7 +871,7 @@ _handle_state_update:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 298: base_color = orange_base_color;
+;	main.c: 299: base_color = orange_base_color;
 	mov	a, #(_base_color + 0)
 	mov	___memcpy_PARM_1+0, a
 	clear	___memcpy_PARM_1+1
@@ -789,103 +883,66 @@ _handle_state_update:
 	mov	___memcpy_PARM_3+0, a
 	clear	___memcpy_PARM_3+1
 	call	___memcpy
-;	main.c: 299: step = STEP_1;
+;	main.c: 300: step = STEP_1;
 	mov	a, #0x01
 	mov	_step+0, a
-;	main.c: 300: state = OFF;
+;	main.c: 301: state = OFF;
 	clear	_state+0
-;	main.c: 302: }
 ;	main.c: 303: }
+;	main.c: 304: }
 	ret
-;	main.c: 305: void button_check()
+;	main.c: 306: void button_check()
 ;	-----------------------------------------
 ;	 function button_check
 ;	-----------------------------------------
 _button_check:
-;	main.c: 307: uint16_t touch_value = read_touch_raw();
+;	main.c: 308: uint16_t touch_value = read_touch_raw();
 	call	_read_touch_raw
-	mov	_button_check_sloc0_1_0+0, a
+	mov	_button_check_sloc2_1_0+0, a
 	mov	a, p
-	mov	_button_check_sloc0_1_0+1, a
-;	main.c: 309: if (touch_value == last_touch)
-	mov	a, _button_check_sloc0_1_0+0
-	ceqsn	a, _last_touch+0
-	goto	00102$
-00137$:
-	mov	a, _button_check_sloc0_1_0+1
-	ceqsn	a, _last_touch+1
-	goto	00102$
-00138$:
-;	main.c: 311: resample_count++;
-	mov	a, _resample_count+0
-	add	a, #0x01
-	mov	_resample_count+0, a
-	goto	00103$
-00102$:
-;	main.c: 315: resample_count = 0;
-	clear	_resample_count+0
-;	main.c: 316: last_touch = touch_value;
-	mov	a, _button_check_sloc0_1_0+0
-	mov	_last_touch+0, a
-	mov	a, _button_check_sloc0_1_0+1
-	mov	_last_touch+1, a
-00103$:
-;	main.c: 319: if (resample_count >= RESAMPLE_BASE_COUNT)
-	mov	a, _resample_count+0
-	sub	a, #0x64
-	t0sn.io	f, c
-	goto	00105$
-00139$:
-;	main.c: 321: touch_base = touch_value;
-	mov	a, _button_check_sloc0_1_0+0
-	mov	_touch_base+0, a
-	mov	a, _button_check_sloc0_1_0+1
-	mov	_touch_base+1, a
-;	main.c: 322: resample_count = 0;
-	clear	_resample_count+0
-00105$:
-;	main.c: 329: if (touch_value < touch_base - TOUCH_THRESHOLD)
-	mov	a, _touch_base+0
-	sub	a, #0x05
-	mov	_button_check_sloc1_1_0+0, a
-	mov	a, _touch_base+1
-	subc	a
-	mov	_button_check_sloc1_1_0+1, a
-	mov	a, _button_check_sloc0_1_0+1
+	mov	_button_check_sloc2_1_0+1, a
+;	main.c: 311: uart_tx_byte(touch_value);
+	mov	a, _button_check_sloc2_1_0+0
+	mov	_uart_tx_byte_PARM_1+0, a
+	mov	a, _button_check_sloc2_1_0+1
+	mov	_uart_tx_byte_PARM_1+1, a
+	call	_uart_tx_byte
+;	main.c: 330: if (touch_value < TOUCH_THRESHOLD)
+	mov	a, _button_check_sloc2_1_0+1
 	mov	p, a
-	mov	a, _button_check_sloc0_1_0+0
-	sub	a, _button_check_sloc1_1_0+0
+	mov	a, _button_check_sloc2_1_0+0
+	sub	a, #0x06
 	mov	a, p
-	subc	a, _button_check_sloc1_1_0+1
+	subc	a
 	t1sn.io	f, c
-	goto	00109$
-00140$:
-;	main.c: 332: if (!button_down)
+	goto	00104$
+00120$:
+;	main.c: 333: if (!button_down)
 	mov	a, _button_down+0
 	ceqsn	a, #0x00
 	ret
-00141$:
-;	main.c: 334: button_down = 1;
+00121$:
+;	main.c: 336: button_down = 1;
 	mov	a, #0x01
 	mov	_button_down+0, a
-;	main.c: 335: handle_state_update();
+;	main.c: 337: handle_state_update();
 	call	_handle_state_update
-;	main.c: 336: state_check();
+;	main.c: 338: state_check();
 	goto	_state_check
 	ret
-00109$:
-;	main.c: 342: button_down = 0;
+00104$:
+;	main.c: 344: button_down = 0;
 	clear	_button_down+0
-;	main.c: 344: }
+;	main.c: 346: }
 	ret
-;	main.c: 346: void handle_tick()
+;	main.c: 348: void handle_tick()
 ;	-----------------------------------------
 ;	 function handle_tick
 ;	-----------------------------------------
 _handle_tick:
-;	main.c: 348: button_check();
+;	main.c: 350: button_check();
 	call	_button_check
-;	main.c: 350: if (state_update_delay_ms_cnt >= GLOBAL_TICK_ms && step != NONE)
+;	main.c: 352: if (state_update_delay_ms_cnt >= GLOBAL_TICK_ms && step != NONE)
 	mov	a, _state_update_delay_ms_cnt+1
 	mov	p, a
 	mov	a, _state_update_delay_ms_cnt+0
@@ -899,7 +956,7 @@ _handle_tick:
 	cneqsn	a, #0x00
 	goto	00107$
 00152$:
-;	main.c: 352: state_update_delay_ms_cnt -= GLOBAL_TICK_ms;
+;	main.c: 354: state_update_delay_ms_cnt -= GLOBAL_TICK_ms;
 	mov	a, _state_update_delay_ms_cnt+0
 	sub	a, #0x0a
 	mov	p, a
@@ -908,7 +965,7 @@ _handle_tick:
 	mov	_state_update_delay_ms_cnt+1, a
 	mov	a, p
 	mov	_state_update_delay_ms_cnt+0, a
-;	main.c: 354: if (led_update_delay_ms_cnt >= LED_UPDATE_DELAY_ms)
+;	main.c: 356: if (led_update_delay_ms_cnt >= LED_UPDATE_DELAY_ms)
 	mov	a, _led_update_delay_ms_cnt+1
 	mov	p, a
 	mov	a, _led_update_delay_ms_cnt+0
@@ -918,88 +975,88 @@ _handle_tick:
 	t0sn.io	f, c
 	goto	00105$
 00153$:
-;	main.c: 356: for (uint8_t i = 0; i < LED_COUNT; i++)
-	clear	_handle_tick_sloc2_1_0+0
+;	main.c: 358: for (uint8_t i = 0; i < LED_COUNT; i++)
+	clear	_handle_tick_sloc3_1_0+0
 00110$:
-	mov	a, _handle_tick_sloc2_1_0+0
+	mov	a, _handle_tick_sloc3_1_0+0
 	sub	a, #0x04
 	t1sn.io	f, c
 	goto	00103$
 00154$:
-;	main.c: 358: if (fades[i] > 0)
+;	main.c: 360: if (fades[i] > 0)
 	mov	a, #(_fades + 0)
-	add	a, _handle_tick_sloc2_1_0+0
+	add	a, _handle_tick_sloc3_1_0+0
 	mov	p, a
 	idxm	a, p
 	cneqsn	a, #0x00
 	goto	00111$
 00155$:
-;	main.c: 360: fades[i]--;
+;	main.c: 362: fades[i]--;
 	mov	a, #(_fades + 0)
-	add	a, _handle_tick_sloc2_1_0+0
+	add	a, _handle_tick_sloc3_1_0+0
 	mov	p, a
 	idxm	a, p
 	sub	a, #0x01
 	idxm	p, a
-;	main.c: 362: pixel_buff[i].r = (pixel_buff[i].r - r_step);
-	mov	a, _handle_tick_sloc2_1_0+0
+;	main.c: 364: pixel_buff[i].r = (pixel_buff[i].r - r_step);
+	mov	a, _handle_tick_sloc3_1_0+0
 	sl	a
-	add	a, _handle_tick_sloc2_1_0+0
-	mov	_handle_tick_sloc3_1_0+0, a
-	mov	a, #(_pixel_buff + 0)
 	add	a, _handle_tick_sloc3_1_0+0
-	add	a, #0x01
 	mov	_handle_tick_sloc4_1_0+0, a
 	mov	a, #(_pixel_buff + 0)
-	add	a, _handle_tick_sloc3_1_0+0
+	add	a, _handle_tick_sloc4_1_0+0
+	add	a, #0x01
+	mov	_handle_tick_sloc5_1_0+0, a
+	mov	a, #(_pixel_buff + 0)
+	add	a, _handle_tick_sloc4_1_0+0
 	add	a, #0x01
 	mov	p, a
 	idxm	a, p
 	sub	a, _r_step+0
 	mov	p, a
-	mov	a, _handle_tick_sloc4_1_0+0
+	mov	a, _handle_tick_sloc5_1_0+0
 	xch	a, p
 	idxm	p, a
-;	main.c: 363: pixel_buff[i].g = (pixel_buff[i].g - g_step);
+;	main.c: 365: pixel_buff[i].g = (pixel_buff[i].g - g_step);
 	mov	a, #(_pixel_buff + 0)
-	add	a, _handle_tick_sloc3_1_0+0
-	mov	_handle_tick_sloc5_1_0+0, a
+	add	a, _handle_tick_sloc4_1_0+0
+	mov	_handle_tick_sloc6_1_0+0, a
 	mov	a, #(_pixel_buff + 0)
-	add	a, _handle_tick_sloc3_1_0+0
+	add	a, _handle_tick_sloc4_1_0+0
 	mov	p, a
 	idxm	a, p
 	sub	a, _g_step+0
 	mov	p, a
-	mov	a, _handle_tick_sloc5_1_0+0
+	mov	a, _handle_tick_sloc6_1_0+0
 	xch	a, p
 	idxm	p, a
-;	main.c: 364: pixel_buff[i].b = (pixel_buff[i].b - b_step);
+;	main.c: 366: pixel_buff[i].b = (pixel_buff[i].b - b_step);
 	mov	a, #(_pixel_buff + 0)
-	add	a, _handle_tick_sloc3_1_0+0
+	add	a, _handle_tick_sloc4_1_0+0
 	add	a, #0x02
-	mov	_handle_tick_sloc6_1_0+0, a
+	mov	_handle_tick_sloc7_1_0+0, a
 	mov	a, #(_pixel_buff + 0)
-	add	a, _handle_tick_sloc3_1_0+0
+	add	a, _handle_tick_sloc4_1_0+0
 	add	a, #0x02
 	mov	p, a
 	idxm	a, p
 	sub	a, _b_step+0
 	mov	p, a
-	mov	a, _handle_tick_sloc6_1_0+0
+	mov	a, _handle_tick_sloc7_1_0+0
 	xch	a, p
 	idxm	p, a
 00111$:
-;	main.c: 356: for (uint8_t i = 0; i < LED_COUNT; i++)
-	inc	_handle_tick_sloc2_1_0+0
+;	main.c: 358: for (uint8_t i = 0; i < LED_COUNT; i++)
+	inc	_handle_tick_sloc3_1_0+0
 	goto	00110$
 00103$:
-;	main.c: 368: output_leds();
+;	main.c: 370: output_leds();
 	call	_output_leds
-;	main.c: 369: led_update_delay_ms_cnt = 0;
+;	main.c: 371: led_update_delay_ms_cnt = 0;
 	clear	_led_update_delay_ms_cnt+0
 	clear	_led_update_delay_ms_cnt+1
 00105$:
-;	main.c: 372: led_update_delay_ms_cnt += GLOBAL_TICK_ms;
+;	main.c: 374: led_update_delay_ms_cnt += GLOBAL_TICK_ms;
 	mov	a, _led_update_delay_ms_cnt+0
 	add	a, #0x0a
 	mov	p, a
@@ -1008,53 +1065,77 @@ _handle_tick:
 	mov	_led_update_delay_ms_cnt+1, a
 	mov	a, p
 	mov	_led_update_delay_ms_cnt+0, a
-;	main.c: 374: return;
+;	main.c: 376: return;
 	ret
 00107$:
-;	main.c: 377: state_check();
+;	main.c: 379: state_check();
 	goto	_state_check
-;	main.c: 378: }
+;	main.c: 380: }
 	ret
-;	main.c: 380: void main(void)
+;	main.c: 382: void main(void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	main.c: 383: sys_clk_init();
+;	main.c: 385: sys_clk_init();
 	call	_sys_clk_init
-;	main.c: 384: led_init();
+;	main.c: 386: led_init();
 	call	_led_init
-;	main.c: 385: timer_init();
+;	main.c: 387: timer_init();
 	call	_timer_init
-;	main.c: 397: touch_init();
+;	main.c: 391: for (uint16_t i = 0; i < 65535; i++)
+	clear	_main_sloc8_1_0+0
+	clear	_main_sloc8_1_0+1
+00108$:
+	mov	a, _main_sloc8_1_0+0
+	sub	a, #0xff
+	mov	a, #0xff
+	mov	p, a
+	mov	a, _main_sloc8_1_0+1
+	subc	a, p
+	t1sn.io	f, c
+	goto	00101$
+00137$:
+;	main.c: 393: __asm__("nop"); // Short delay to ensure stable power before configuring pins
+	nop
+;	main.c: 391: for (uint16_t i = 0; i < 65535; i++)
+	inc	_main_sloc8_1_0+0
+	addc	_main_sloc8_1_0+1
+	goto	00108$
+00101$:
+;	main.c: 395: PAC |= TX_PIN; // Set PA.0 as output
+	set1.io	__pac, #3
+;	main.c: 396: PA |= TX_PIN;  // Idle High
+	set1.io	__pa, #3
+;	main.c: 399: touch_init();
 	call	_touch_init
-;	main.c: 399: touch_base = read_touch_raw();
+;	main.c: 401: touch_base = read_touch_raw();
 	call	_read_touch_raw
 	mov	_touch_base+0, a
 	mov	a, p
 	mov	_touch_base+1, a
-;	main.c: 401: state = BLUE;
+;	main.c: 403: state = BLUE;
 	mov	a, #0x01
 	mov	_state+0, a
-;	main.c: 402: step = NONE;
+;	main.c: 404: step = NONE;
 	clear	_step+0
-;	main.c: 403: handle_state_update();
+;	main.c: 405: handle_state_update();
 	call	_handle_state_update
-;	main.c: 405: while (1)
-00104$:
-;	main.c: 407: if (TM2CT >= GLOBAL_TICK_ms)
+;	main.c: 407: while (1)
+00105$:
+;	main.c: 409: if (TM2CT >= GLOBAL_TICK_ms)
 	mov.io	a, __tm2ct
 	sub	a, #0x0a
 	t0sn.io	f, c
-	goto	00104$
-00120$:
-;	main.c: 409: TM2CT = 0; // Clear the timer count
+	goto	00105$
+00138$:
+;	main.c: 411: TM2CT = 0; // Clear the timer count
 	mov	a, #0x00
 	mov.io	__tm2ct, a
-;	main.c: 410: handle_tick();
+;	main.c: 412: handle_tick();
 	call	_handle_tick
-	goto	00104$
-;	main.c: 413: }
+	goto	00105$
+;	main.c: 415: }
 	ret
 	.area CODE
 	.area CONST

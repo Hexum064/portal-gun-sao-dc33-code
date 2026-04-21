@@ -66,62 +66,73 @@ Symbol Table
     __tps                                                       =  000026 G
     __tps2                                                      =  000028 G
     __ts                                                        =  000020 G
-  1 _b_step                                                        00001D GR
-  1 _base_color                                                    000000 GR
+  1 _b_step                                                        000020 GR
+  1 _base_color                                                    000003 GR
  10 _blue_base_color                                               00000C GR
  10 _blue_highlight_color                                          000012 GR
-  F _button_check                                                  00026E GR
-  1 _button_check_sloc0_1_0                                        000029 R
-  1 _button_check_sloc1_1_0                                        00002B R
-  1 _button_ctr                                                    00001E GR
-  1 _button_down                                                   00001F GR
-  1 _byte_ctr                                                      00001A GR
-  1 _byte_t                                                        000019 GR
-  1 _bytes                                                         000018 GR
-  1 _fades                                                         000014 GR
-  1 _g_step                                                        00001C GR
-  F _handle_state_update                                           0001D8 GR
-  F _handle_tick                                                   0002D6 GR
-  1 _handle_tick_sloc2_1_0                                         00002D R
-  1 _handle_tick_sloc3_1_0                                         00002E R
-  1 _handle_tick_sloc4_1_0                                         00002F R
-  1 _handle_tick_sloc5_1_0                                         000030 R
-  1 _handle_tick_sloc6_1_0                                         000031 R
-  1 _highlight_color                                               000003 GR
-  1 _last_touch                                                    000026 GR
-  F _led_init                                                      000018 GR
-  1 _led_update_delay_ms_cnt                                       000020 GR
-  F _main                                                          0003A8 GR
+  F _button_check                                                  0002CC GR
+  1 _button_check_sloc2_1_0                                        00002D R
+  1 _button_ctr                                                    000021 GR
+  1 _button_down                                                   000022 GR
+  1 _byte_ctr                                                      00001D GR
+  1 _byte_t                                                        00001C GR
+  1 _bytes                                                         00001B GR
+  F _delay_cycles                                                  000000 GR
+  2 _delay_cycles_PARM_1                                           000000 GR
+  2 _delay_cycles_sloc0_1_0                                        000002 R
+  1 _fades                                                         000017 GR
+  1 _g_step                                                        00001F GR
+  F _handle_state_update                                           000236 GR
+  F _handle_tick                                                   000302 GR
+  1 _handle_tick_sloc3_1_0                                         00002F R
+  1 _handle_tick_sloc4_1_0                                         000030 R
+  1 _handle_tick_sloc5_1_0                                         000031 R
+  1 _handle_tick_sloc6_1_0                                         000032 R
+  1 _handle_tick_sloc7_1_0                                         000033 R
+  1 _highlight_color                                               000006 GR
+  1 _last_touch                                                    000029 GR
+  F _led_init                                                      000076 GR
+  1 _led_update_delay_ms_cnt                                       000023 GR
+  F _main                                                          0003D4 GR
+  1 _main_sloc8_1_0                                                000034 R
  10 _off_color                                                     000018 GR
  10 _orange_base_color                                             000000 GR
  10 _orange_highlight_color                                        000006 GR
-  F _output_leds                                                   00002A GR
-  1 _pixel_buff                                                    000008 GR
-  1 _r_step                                                        00001B GR
-  F _read_touch_raw                                                000050 GR
-  1 _resample_count                                                000028 GR
-  1 _state                                                         000007 GR
-  F _state_check                                                   000068 GR
-  1 _state_update_delay_ms_cnt                                     000022 GR
-  1 _step                                                          000006 GR
-  F _sys_clk_init                                                  000012 GR
-  F _timer_init                                                    00001C GR
-  1 _touch_base                                                    000024 GR
-  F _touch_init                                                    000000 GR
+  F _output_leds                                                   000088 GR
+  1 _pixel_buff                                                    00000B GR
+  1 _r_step                                                        00001E GR
+  F _read_touch_raw                                                0000AE GR
+  1 _resample_count                                                00002B GR
+  1 _state                                                         00000A GR
+  F _state_check                                                   0000C6 GR
+  1 _state_update_delay_ms_cnt                                     000025 GR
+  1 _step                                                          000009 GR
+  F _sys_clk_init                                                  000070 GR
+  F _timer_init                                                    00007A GR
+  1 _touch_base                                                    000027 GR
+  F _touch_init                                                    00005E GR
+  F _uart_tx_byte                                                  00001E GR
+  1 _uart_tx_byte_PARM_1                                           000000 GR
+  1 _uart_tx_byte_sloc1_1_0                                        000002 R
     l_DATA                                                         ****** GX
     l_OSEG                                                         ****** GX
   D p                                                              000000 GR
     s_DATA                                                         ****** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Padauk 14)                Page 3
+Hexadecimal [24-Bits]
+
+Symbol Table
+
     s_OSEG                                                         ****** GX
 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Padauk 14)                Page 3
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Padauk 14)                Page 4
 Hexadecimal [24-Bits]
 
 Area Table
 
    0 _CODE                                      size      0   flags    0
-   1 DATA                                       size     32   flags    0
-   2 OSEG                                       size      0   flags    4
+   1 DATA                                       size     36   flags    0
+   2 OSEG                                       size      4   flags    4
    3 RSEG                                       size      0   flags    8
    4 RSEG0                                      size      2   flags    8
    5 SSEG                                       size      1   flags    0
@@ -129,12 +140,12 @@ Area Table
    7 HOME                                       size      2   flags    0
    8 HEADER                                     size      0   flags    8
    9 HEADER1                                    size      2   flags    8
-   A GSINIT                                     size     3E   flags    0
+   A GSINIT                                     size     40   flags    0
    B GSFINAL                                    size      2   flags    0
    C PREG                                       size      0   flags    8
    D PREG2                                      size      2   flags    8
    E HEADER3                                    size     14   flags    8
-   F CODE                                       size    3D2   flags    0
+   F CODE                                       size    41E   flags    0
   10 CONST                                      size     1E   flags    0
   11 CABS                                       size      0   flags    8
 
