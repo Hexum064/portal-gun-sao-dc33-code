@@ -95,8 +95,8 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000056  s_SSEG                          
      00000074  s_GSFINAL                       
      00000076  s_CODE                          
-     0000062E  l_CODE                          
-     000006A4  s_CONST                         
+     00000630  l_CODE                          
+     000006A6  s_CONST                         
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
@@ -228,7 +228,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                00000076    0000062E =        1582. bytes (REL,CON)
+CODE                                00000076    00000630 =        1584. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -245,28 +245,28 @@ CODE                                00000076    0000062E =        1582. bytes (R
      00000300  _handle_state_update               main
      00000396  _running_avg                       main
      000003F8  _button_check                      main
-     000004A2  _handle_tick                       main
-     00000574  _main                              main
-     000005D0  ___memcpy                          __memcpy
-     00000622  __mulint                           _mulint
-     0000065C  __muluchar                         _muluchar
-     0000068A  ___sdcc_external_startup           _startup
-     0000068C  __gptrget                          __gptrget
+     000004A4  _handle_tick                       main
+     00000576  _main                              main
+     000005D2  ___memcpy                          __memcpy
+     00000624  __mulint                           _mulint
+     0000065E  __muluchar                         _muluchar
+     0000068C  ___sdcc_external_startup           _startup
+     0000068E  __gptrget                          __gptrget
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 14.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CONST                               000006A4    0000001E =          30. bytes (REL,CON)
+CONST                               000006A6    0000001E =          30. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000006A4  _orange_base_color                 main
-     000006AA  _orange_highlight_color            main
-     000006B0  _blue_base_color                   main
-     000006B6  _blue_highlight_color              main
-     000006BC  _off_color                         main
+     000006A6  _orange_base_color                 main
+     000006AC  _orange_highlight_color            main
+     000006B2  _blue_base_color                   main
+     000006B8  _blue_highlight_color              main
+     000006BE  _off_color                         main
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 15.
 

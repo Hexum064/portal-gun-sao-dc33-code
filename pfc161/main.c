@@ -371,7 +371,7 @@ void button_check(void)
 
     if (button_down == 1 && button_handled == 0)
     {
-        uart_tx_byte(TOUCH_TOKEN);
+        uart_tx_byte(TOUCH_TOKEN - state);
         uart_tx_byte(last_touch);
         button_handled = 1;
         handle_state_update();
@@ -382,7 +382,6 @@ void button_check(void)
         uart_tx_byte(READ_TOKEN);
         uart_tx_byte(last_touch);
     }
-
 }
 
 void handle_tick(void)

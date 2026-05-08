@@ -274,7 +274,7 @@
       000006 0F 28                  274 	add	a, #l_OSEG + 1
       000008 FE 2C                  275 	and	a, #0xfe
       00000A 82 01                  276 	mov.io	sp, a
-      00000C 45 3B                  277 	call	___sdcc_external_startup
+      00000C 46 3B                  277 	call	___sdcc_external_startup
       00000E 00 2B                  278 	cneqsn	a, #0x00
       000010 12 30                  279 	goto	__sdcc_init_data
       000012 11 30                  280 	goto	__sdcc_program_startup
@@ -348,7 +348,7 @@
                                     348 	.area HOME
                                     349 	.area HOME
       000022                        350 __sdcc_program_startup:
-      000022 BA 32                  351 	goto	_main
+      000022 BB 32                  351 	goto	_main
                                     352 ;	return from main will return to caller
                                     353 ;--------------------------------------------------------
                                     354 ; code
@@ -553,7 +553,7 @@
       000130 19 2F                  553 	mov	a, #0x19
       000132 C2 0B                  554 	mov	__mulint_PARM_1+0, a
       000134 43 13                  555 	clear	__mulint_PARM_1+1
-      000136 11 3B                  556 	call	__mulint
+      000136 12 3B                  556 	call	__mulint
                                     557 ;	main.c: 213: uint16_t thresh = big_thress >> 7; // divide by 128
       000138 B2 0B                  558 	mov	_calc_touch_window_sloc2_1_0+0, a
       00013A 80 0F                  559 	mov	a, p
@@ -654,7 +654,7 @@
       0001B8 03 2F                  654 	mov	a, #0x03
       0001BA CC 0B                  655 	mov	___memcpy_PARM_3+0, a
       0001BC 4D 13                  656 	clear	___memcpy_PARM_3+1
-      0001BE E8 3A                  657 	call	___memcpy
+      0001BE E9 3A                  657 	call	___memcpy
                                     658 ;	main.c: 247: pixel_buff[2] = base_color;
       0001C0 10 2F                  659 	mov	a, #(_pixel_buff + 6)
       0001C2 C8 0B                  660 	mov	___memcpy_PARM_1+0, a
@@ -665,7 +665,7 @@
       0001CC 03 2F                  665 	mov	a, #0x03
       0001CE CC 0B                  666 	mov	___memcpy_PARM_3+0, a
       0001D0 4D 13                  667 	clear	___memcpy_PARM_3+1
-      0001D2 E8 3A                  668 	call	___memcpy
+      0001D2 E9 3A                  668 	call	___memcpy
                                     669 ;	main.c: 248: pixel_buff[1] = base_color;
       0001D4 0D 2F                  670 	mov	a, #(_pixel_buff + 3)
       0001D6 C8 0B                  671 	mov	___memcpy_PARM_1+0, a
@@ -676,7 +676,7 @@
       0001E0 03 2F                  676 	mov	a, #0x03
       0001E2 CC 0B                  677 	mov	___memcpy_PARM_3+0, a
       0001E4 4D 13                  678 	clear	___memcpy_PARM_3+1
-      0001E6 E8 3A                  679 	call	___memcpy
+      0001E6 E9 3A                  679 	call	___memcpy
                                     680 ;	main.c: 249: pixel_buff[0] = base_color;
       0001E8 0A 2F                  681 	mov	a, #(_pixel_buff + 0)
       0001EA C8 0B                  682 	mov	___memcpy_PARM_1+0, a
@@ -687,7 +687,7 @@
       0001F4 03 2F                  687 	mov	a, #0x03
       0001F6 CC 0B                  688 	mov	___memcpy_PARM_3+0, a
       0001F8 4D 13                  689 	clear	___memcpy_PARM_3+1
-      0001FA E8 3A                  690 	call	___memcpy
+      0001FA E9 3A                  690 	call	___memcpy
                                     691 ;	main.c: 250: fades[3] = FADE_STEPS;
       0001FC 08 2F                  692 	mov	a, #0x08
       0001FE 99 0B                  693 	mov	_fades+3, a
@@ -729,7 +729,7 @@
       00022A 03 2F                  729 	mov	a, #0x03
       00022C CC 0B                  730 	mov	___memcpy_PARM_3+0, a
       00022E 4D 13                  731 	clear	___memcpy_PARM_3+1
-      000230 E8 3A                  732 	call	___memcpy
+      000230 E9 3A                  732 	call	___memcpy
                                     733 ;	main.c: 264: fades[2] = FADE_STEPS;
       000232 08 2F                  734 	mov	a, #0x08
       000234 98 0B                  735 	mov	_fades+2, a
@@ -754,7 +754,7 @@
       00024E 03 2F                  754 	mov	a, #0x03
       000250 CC 0B                  755 	mov	___memcpy_PARM_3+0, a
       000252 4D 13                  756 	clear	___memcpy_PARM_3+1
-      000254 E8 3A                  757 	call	___memcpy
+      000254 E9 3A                  757 	call	___memcpy
                                     758 ;	main.c: 270: fades[1] = FADE_STEPS;
       000256 08 2F                  759 	mov	a, #0x08
       000258 97 0B                  760 	mov	_fades+1, a
@@ -790,7 +790,7 @@
       00027E 03 2F                  790 	mov	a, #0x03
       000280 CC 0B                  791 	mov	___memcpy_PARM_3+0, a
       000282 4D 13                  792 	clear	___memcpy_PARM_3+1
-      000284 E8 3A                  793 	call	___memcpy
+      000284 E9 3A                  793 	call	___memcpy
                                     794 ;	main.c: 280: fades[0] = FADE_STEPS;
       000286 08 2F                  795 	mov	a, #0x08
       000288 96 0B                  796 	mov	_fades+0, a
@@ -821,50 +821,50 @@
       0002A4 0A 2F                  821 	mov	a, #(_pixel_buff + 0)
       0002A6 C8 0B                  822 	mov	___memcpy_PARM_1+0, a
       0002A8 49 13                  823 	clear	___memcpy_PARM_1+1
-      0002AA 5E 2F                  824 	mov	a, #<(_off_color + 0)
+      0002AA 5F 2F                  824 	mov	a, #<(_off_color + 0)
       0002AC CA 0B                  825 	mov	___memcpy_PARM_2+0, a
       0002AE 83 2F                  826 	mov	a, #>(_off_color + 0x8000 + 0)
       0002B0 CB 0B                  827 	mov	___memcpy_PARM_2+1, a
       0002B2 03 2F                  828 	mov	a, #0x03
       0002B4 CC 0B                  829 	mov	___memcpy_PARM_3+0, a
       0002B6 4D 13                  830 	clear	___memcpy_PARM_3+1
-      0002B8 E8 3A                  831 	call	___memcpy
+      0002B8 E9 3A                  831 	call	___memcpy
                                     832 ;	main.c: 291: pixel_buff[1] = off_color;
       0002BA 0D 2F                  833 	mov	a, #(_pixel_buff + 3)
       0002BC C8 0B                  834 	mov	___memcpy_PARM_1+0, a
       0002BE 49 13                  835 	clear	___memcpy_PARM_1+1
-      0002C0 5E 2F                  836 	mov	a, #<(_off_color + 0)
+      0002C0 5F 2F                  836 	mov	a, #<(_off_color + 0)
       0002C2 CA 0B                  837 	mov	___memcpy_PARM_2+0, a
       0002C4 83 2F                  838 	mov	a, #>(_off_color + 0x8000 + 0)
       0002C6 CB 0B                  839 	mov	___memcpy_PARM_2+1, a
       0002C8 03 2F                  840 	mov	a, #0x03
       0002CA CC 0B                  841 	mov	___memcpy_PARM_3+0, a
       0002CC 4D 13                  842 	clear	___memcpy_PARM_3+1
-      0002CE E8 3A                  843 	call	___memcpy
+      0002CE E9 3A                  843 	call	___memcpy
                                     844 ;	main.c: 292: pixel_buff[2] = off_color;
       0002D0 10 2F                  845 	mov	a, #(_pixel_buff + 6)
       0002D2 C8 0B                  846 	mov	___memcpy_PARM_1+0, a
       0002D4 49 13                  847 	clear	___memcpy_PARM_1+1
-      0002D6 5E 2F                  848 	mov	a, #<(_off_color + 0)
+      0002D6 5F 2F                  848 	mov	a, #<(_off_color + 0)
       0002D8 CA 0B                  849 	mov	___memcpy_PARM_2+0, a
       0002DA 83 2F                  850 	mov	a, #>(_off_color + 0x8000 + 0)
       0002DC CB 0B                  851 	mov	___memcpy_PARM_2+1, a
       0002DE 03 2F                  852 	mov	a, #0x03
       0002E0 CC 0B                  853 	mov	___memcpy_PARM_3+0, a
       0002E2 4D 13                  854 	clear	___memcpy_PARM_3+1
-      0002E4 E8 3A                  855 	call	___memcpy
+      0002E4 E9 3A                  855 	call	___memcpy
                                     856 ;	main.c: 293: pixel_buff[3] = off_color;
       0002E6 13 2F                  857 	mov	a, #(_pixel_buff + 9)
       0002E8 C8 0B                  858 	mov	___memcpy_PARM_1+0, a
       0002EA 49 13                  859 	clear	___memcpy_PARM_1+1
-      0002EC 5E 2F                  860 	mov	a, #<(_off_color + 0)
+      0002EC 5F 2F                  860 	mov	a, #<(_off_color + 0)
       0002EE CA 0B                  861 	mov	___memcpy_PARM_2+0, a
       0002F0 83 2F                  862 	mov	a, #>(_off_color + 0x8000 + 0)
       0002F2 CB 0B                  863 	mov	___memcpy_PARM_2+1, a
       0002F4 03 2F                  864 	mov	a, #0x03
       0002F6 CC 0B                  865 	mov	___memcpy_PARM_3+0, a
       0002F8 4D 13                  866 	clear	___memcpy_PARM_3+1
-      0002FA E8 3A                  867 	call	___memcpy
+      0002FA E9 3A                  867 	call	___memcpy
                                     868 ;	main.c: 294: output_leds();
       0002FC 81 30                  869 	goto	_output_leds
                                     870 ;	main.c: 296: }
@@ -909,26 +909,26 @@
       000320 05 2F                  909 	mov	a, #(_highlight_color + 0)
       000322 C8 0B                  910 	mov	___memcpy_PARM_1+0, a
       000324 49 13                  911 	clear	___memcpy_PARM_1+1
-      000326 5B 2F                  912 	mov	a, #<(_blue_highlight_color + 0)
+      000326 5C 2F                  912 	mov	a, #<(_blue_highlight_color + 0)
       000328 CA 0B                  913 	mov	___memcpy_PARM_2+0, a
       00032A 83 2F                  914 	mov	a, #>(_blue_highlight_color + 0x8000 + 0)
       00032C CB 0B                  915 	mov	___memcpy_PARM_2+1, a
       00032E 03 2F                  916 	mov	a, #0x03
       000330 CC 0B                  917 	mov	___memcpy_PARM_3+0, a
       000332 4D 13                  918 	clear	___memcpy_PARM_3+1
-      000334 E8 3A                  919 	call	___memcpy
+      000334 E9 3A                  919 	call	___memcpy
                                     920 ;	main.c: 314: base_color = blue_base_color;
       000336 02 2F                  921 	mov	a, #(_base_color + 0)
       000338 C8 0B                  922 	mov	___memcpy_PARM_1+0, a
       00033A 49 13                  923 	clear	___memcpy_PARM_1+1
-      00033C 58 2F                  924 	mov	a, #<(_blue_base_color + 0)
+      00033C 59 2F                  924 	mov	a, #<(_blue_base_color + 0)
       00033E CA 0B                  925 	mov	___memcpy_PARM_2+0, a
       000340 83 2F                  926 	mov	a, #>(_blue_base_color + 0x8000 + 0)
       000342 CB 0B                  927 	mov	___memcpy_PARM_2+1, a
       000344 03 2F                  928 	mov	a, #0x03
       000346 CC 0B                  929 	mov	___memcpy_PARM_3+0, a
       000348 4D 13                  930 	clear	___memcpy_PARM_3+1
-      00034A E8 3A                  931 	call	___memcpy
+      00034A E9 3A                  931 	call	___memcpy
                                     932 ;	main.c: 315: step = STEP_1;
       00034C 01 2F                  933 	mov	a, #0x01
       00034E 88 0B                  934 	mov	_step+0, a
@@ -952,26 +952,26 @@
       000362 05 2F                  952 	mov	a, #(_highlight_color + 0)
       000364 C8 0B                  953 	mov	___memcpy_PARM_1+0, a
       000366 49 13                  954 	clear	___memcpy_PARM_1+1
-      000368 55 2F                  955 	mov	a, #<(_orange_highlight_color + 0)
+      000368 56 2F                  955 	mov	a, #<(_orange_highlight_color + 0)
       00036A CA 0B                  956 	mov	___memcpy_PARM_2+0, a
       00036C 83 2F                  957 	mov	a, #>(_orange_highlight_color + 0x8000 + 0)
       00036E CB 0B                  958 	mov	___memcpy_PARM_2+1, a
       000370 03 2F                  959 	mov	a, #0x03
       000372 CC 0B                  960 	mov	___memcpy_PARM_3+0, a
       000374 4D 13                  961 	clear	___memcpy_PARM_3+1
-      000376 E8 3A                  962 	call	___memcpy
+      000376 E9 3A                  962 	call	___memcpy
                                     963 ;	main.c: 323: base_color = orange_base_color;
       000378 02 2F                  964 	mov	a, #(_base_color + 0)
       00037A C8 0B                  965 	mov	___memcpy_PARM_1+0, a
       00037C 49 13                  966 	clear	___memcpy_PARM_1+1
-      00037E 52 2F                  967 	mov	a, #<(_orange_base_color + 0)
+      00037E 53 2F                  967 	mov	a, #<(_orange_base_color + 0)
       000380 CA 0B                  968 	mov	___memcpy_PARM_2+0, a
       000382 83 2F                  969 	mov	a, #>(_orange_base_color + 0x8000 + 0)
       000384 CB 0B                  970 	mov	___memcpy_PARM_2+1, a
       000386 03 2F                  971 	mov	a, #0x03
       000388 CC 0B                  972 	mov	___memcpy_PARM_3+0, a
       00038A 4D 13                  973 	clear	___memcpy_PARM_3+1
-      00038C E8 3A                  974 	call	___memcpy
+      00038C E9 3A                  974 	call	___memcpy
                                     975 ;	main.c: 324: step = STEP_1;
       00038E 01 2F                  976 	mov	a, #0x01
       000390 88 0B                  977 	mov	_step+0, a
@@ -1128,288 +1128,289 @@
       00046E 2E 13                 1128 	clear	_resample_count+0
       000470 2F 13                 1129 	clear	_resample_count+1
       000472                       1130 00108$:
-                                   1131 ;	main.c: 380: if (button_down == 1 && button_handled == 0)
+                                   1131 ;	main.c: 372: if (button_down == 1 && button_handled == 0)
       000472 A1 0F                 1132 	mov	a, _button_down+0
       000474 01 2A                 1133 	ceqsn	a, #0x01
-      000476 4A 32                 1134 	goto	00110$
+      000476 4B 32                 1134 	goto	00110$
       000478                       1135 00148$:
       000478 A0 0F                 1136 	mov	a, _button_handled+0
       00047A 00 2A                 1137 	ceqsn	a, #0x00
-      00047C 4A 32                 1138 	goto	00110$
+      00047C 4B 32                 1138 	goto	00110$
       00047E                       1139 00149$:
-                                   1140 ;	main.c: 382: uart_tx_byte(TOUCH_TOKEN);
+                                   1140 ;	main.c: 374: uart_tx_byte(TOUCH_TOKEN - state);
       00047E FE 2F                 1141 	mov	a, #0xfe
-      000480 B0 0B                 1142 	mov	_uart_tx_byte_PARM_1+0, a
-      000482 4A 38                 1143 	call	_uart_tx_byte
-                                   1144 ;	main.c: 383: uart_tx_byte(last_touch);
-      000484 A8 0F                 1145 	mov	a, _last_touch+0
-      000486 B0 0B                 1146 	mov	_uart_tx_byte_PARM_1+0, a
-      000488 4A 38                 1147 	call	_uart_tx_byte
-                                   1148 ;	main.c: 384: button_handled = 1;
-      00048A 01 2F                 1149 	mov	a, #0x01
-      00048C A0 0B                 1150 	mov	_button_handled+0, a
-                                   1151 ;	main.c: 385: handle_state_update();
-      00048E 80 39                 1152 	call	_handle_state_update
-                                   1153 ;	main.c: 386: state_check();
-      000490 C8 30                 1154 	goto	_state_check
-      000492 7A 00                 1155 	ret
-      000494                       1156 00110$:
-                                   1157 ;	main.c: 390: uart_tx_byte(READ_TOKEN);
-      000494 FF 2F                 1158 	mov	a, #0xff
-      000496 B0 0B                 1159 	mov	_uart_tx_byte_PARM_1+0, a
-      000498 4A 38                 1160 	call	_uart_tx_byte
-                                   1161 ;	main.c: 391: uart_tx_byte(last_touch);
-      00049A A8 0F                 1162 	mov	a, _last_touch+0
-      00049C B0 0B                 1163 	mov	_uart_tx_byte_PARM_1+0, a
-      00049E 4A 30                 1164 	goto	_uart_tx_byte
-                                   1165 ;	main.c: 425: }
-      0004A0 7A 00                 1166 	ret
-                                   1167 ;	main.c: 427: void handle_tick(void)
-                                   1168 ;	-----------------------------------------
-                                   1169 ;	 function handle_tick
-                                   1170 ;	-----------------------------------------
-      0004A2                       1171 _handle_tick:
-                                   1172 ;	main.c: 429: button_check();
-      0004A2 FC 39                 1173 	call	_button_check
-                                   1174 ;	main.c: 431: if (state_update_delay_ms_cnt >= GLOBAL_TICK_ms && step != NONE)
-      0004A4 A5 0F                 1175 	mov	a, _state_update_delay_ms_cnt+1
-      0004A6 80 0B                 1176 	mov	p, a
-      0004A8 A4 0F                 1177 	mov	a, _state_update_delay_ms_cnt+0
-      0004AA 0A 29                 1178 	sub	a, #0x0a
-      0004AC 80 0F                 1179 	mov	a, p
-      0004AE 61 00                 1180 	subc	a
-      0004B0 40 18                 1181 	t0sn.io	f, c
-      0004B2 B8 32                 1182 	goto	00107$
-      0004B4                       1183 00151$:
-      0004B4 88 0F                 1184 	mov	a, _step+0
-      0004B6 00 2B                 1185 	cneqsn	a, #0x00
-      0004B8 B8 32                 1186 	goto	00107$
-      0004BA                       1187 00152$:
-                                   1188 ;	main.c: 433: state_update_delay_ms_cnt -= GLOBAL_TICK_ms;
-      0004BA A4 0F                 1189 	mov	a, _state_update_delay_ms_cnt+0
-      0004BC 0A 29                 1190 	sub	a, #0x0a
-      0004BE 80 0B                 1191 	mov	p, a
-      0004C0 A5 0F                 1192 	mov	a, _state_update_delay_ms_cnt+1
-      0004C2 61 00                 1193 	subc	a
-      0004C4 A5 0B                 1194 	mov	_state_update_delay_ms_cnt+1, a
-      0004C6 80 0F                 1195 	mov	a, p
-      0004C8 A4 0B                 1196 	mov	_state_update_delay_ms_cnt+0, a
-                                   1197 ;	main.c: 435: if (led_update_delay_ms_cnt >= LED_UPDATE_DELAY_ms)
-      0004CA A3 0F                 1198 	mov	a, _led_update_delay_ms_cnt+1
-      0004CC 80 0B                 1199 	mov	p, a
-      0004CE A2 0F                 1200 	mov	a, _led_update_delay_ms_cnt+0
-      0004D0 32 29                 1201 	sub	a, #0x32
-      0004D2 80 0F                 1202 	mov	a, p
-      0004D4 61 00                 1203 	subc	a
-      0004D6 40 18                 1204 	t0sn.io	f, c
-      0004D8 AF 32                 1205 	goto	00105$
-      0004DA                       1206 00153$:
-                                   1207 ;	main.c: 437: for (uint8_t i = 0; i < LED_COUNT; i++)
-      0004DA 38 13                 1208 	clear	_handle_tick_sloc5_1_0+0
-      0004DC                       1209 00110$:
-      0004DC B8 0F                 1210 	mov	a, _handle_tick_sloc5_1_0+0
-      0004DE 04 29                 1211 	sub	a, #0x04
-      0004E0 40 1A                 1212 	t1sn.io	f, c
-      0004E2 AC 32                 1213 	goto	00103$
-      0004E4                       1214 00154$:
-                                   1215 ;	main.c: 439: if (fades[i] > 0)
-      0004E4 16 2F                 1216 	mov	a, #(_fades + 0)
-      0004E6 38 0C                 1217 	add	a, _handle_tick_sloc5_1_0+0
-      0004E8 80 0B                 1218 	mov	p, a
-      0004EA 81 03                 1219 	idxm	a, p
-      0004EC 00 2B                 1220 	cneqsn	a, #0x00
-      0004EE AA 32                 1221 	goto	00111$
-      0004F0                       1222 00155$:
-                                   1223 ;	main.c: 441: fades[i]--;
-      0004F0 16 2F                 1224 	mov	a, #(_fades + 0)
-      0004F2 38 0C                 1225 	add	a, _handle_tick_sloc5_1_0+0
-      0004F4 80 0B                 1226 	mov	p, a
-      0004F6 81 03                 1227 	idxm	a, p
-      0004F8 01 29                 1228 	sub	a, #0x01
-      0004FA 80 03                 1229 	idxm	p, a
-                                   1230 ;	main.c: 443: pixel_buff[i].r = (pixel_buff[i].r - r_step);
-      0004FC B8 0F                 1231 	mov	a, _handle_tick_sloc5_1_0+0
-      0004FE 6B 00                 1232 	sl	a
-      000500 38 0C                 1233 	add	a, _handle_tick_sloc5_1_0+0
-      000502 B9 0B                 1234 	mov	_handle_tick_sloc6_1_0+0, a
-      000504 0A 2F                 1235 	mov	a, #(_pixel_buff + 0)
-      000506 39 0C                 1236 	add	a, _handle_tick_sloc6_1_0+0
-      000508 01 28                 1237 	add	a, #0x01
-      00050A BA 0B                 1238 	mov	_handle_tick_sloc7_1_0+0, a
-      00050C 0A 2F                 1239 	mov	a, #(_pixel_buff + 0)
-      00050E 39 0C                 1240 	add	a, _handle_tick_sloc6_1_0+0
-      000510 01 28                 1241 	add	a, #0x01
-      000512 80 0B                 1242 	mov	p, a
-      000514 81 03                 1243 	idxm	a, p
-      000516 9D 0C                 1244 	sub	a, _r_step+0
-      000518 80 0B                 1245 	mov	p, a
-      00051A BA 0F                 1246 	mov	a, _handle_tick_sloc7_1_0+0
-      00051C 80 13                 1247 	xch	a, p
-      00051E 80 03                 1248 	idxm	p, a
-                                   1249 ;	main.c: 444: pixel_buff[i].g = (pixel_buff[i].g - g_step);
-      000520 0A 2F                 1250 	mov	a, #(_pixel_buff + 0)
-      000522 39 0C                 1251 	add	a, _handle_tick_sloc6_1_0+0
-      000524 BB 0B                 1252 	mov	_handle_tick_sloc8_1_0+0, a
-      000526 0A 2F                 1253 	mov	a, #(_pixel_buff + 0)
-      000528 39 0C                 1254 	add	a, _handle_tick_sloc6_1_0+0
-      00052A 80 0B                 1255 	mov	p, a
-      00052C 81 03                 1256 	idxm	a, p
-      00052E 9E 0C                 1257 	sub	a, _g_step+0
-      000530 80 0B                 1258 	mov	p, a
-      000532 BB 0F                 1259 	mov	a, _handle_tick_sloc8_1_0+0
-      000534 80 13                 1260 	xch	a, p
-      000536 80 03                 1261 	idxm	p, a
-                                   1262 ;	main.c: 445: pixel_buff[i].b = (pixel_buff[i].b - b_step);
-      000538 0A 2F                 1263 	mov	a, #(_pixel_buff + 0)
-      00053A 39 0C                 1264 	add	a, _handle_tick_sloc6_1_0+0
-      00053C 02 28                 1265 	add	a, #0x02
-      00053E BC 0B                 1266 	mov	_handle_tick_sloc9_1_0+0, a
-      000540 0A 2F                 1267 	mov	a, #(_pixel_buff + 0)
-      000542 39 0C                 1268 	add	a, _handle_tick_sloc6_1_0+0
-      000544 02 28                 1269 	add	a, #0x02
-      000546 80 0B                 1270 	mov	p, a
-      000548 81 03                 1271 	idxm	a, p
-      00054A 9F 0C                 1272 	sub	a, _b_step+0
-      00054C 80 0B                 1273 	mov	p, a
-      00054E BC 0F                 1274 	mov	a, _handle_tick_sloc9_1_0+0
-      000550 80 13                 1275 	xch	a, p
-      000552 80 03                 1276 	idxm	p, a
-      000554                       1277 00111$:
-                                   1278 ;	main.c: 437: for (uint8_t i = 0; i < LED_COUNT; i++)
-      000554 38 12                 1279 	inc	_handle_tick_sloc5_1_0+0
-      000556 6E 32                 1280 	goto	00110$
-      000558                       1281 00103$:
-                                   1282 ;	main.c: 449: output_leds();
-      000558 81 38                 1283 	call	_output_leds
-                                   1284 ;	main.c: 450: led_update_delay_ms_cnt = 0;
-      00055A 22 13                 1285 	clear	_led_update_delay_ms_cnt+0
-      00055C 23 13                 1286 	clear	_led_update_delay_ms_cnt+1
-      00055E                       1287 00105$:
-                                   1288 ;	main.c: 453: led_update_delay_ms_cnt += GLOBAL_TICK_ms;
-      00055E A2 0F                 1289 	mov	a, _led_update_delay_ms_cnt+0
-      000560 0A 28                 1290 	add	a, #0x0a
-      000562 80 0B                 1291 	mov	p, a
-      000564 A3 0F                 1292 	mov	a, _led_update_delay_ms_cnt+1
-      000566 60 00                 1293 	addc	a
-      000568 A3 0B                 1294 	mov	_led_update_delay_ms_cnt+1, a
-      00056A 80 0F                 1295 	mov	a, p
-      00056C A2 0B                 1296 	mov	_led_update_delay_ms_cnt+0, a
-                                   1297 ;	main.c: 455: return;
-      00056E 7A 00                 1298 	ret
-      000570                       1299 00107$:
-                                   1300 ;	main.c: 458: state_check();
-      000570 C8 30                 1301 	goto	_state_check
-                                   1302 ;	main.c: 459: }
-      000572 7A 00                 1303 	ret
-                                   1304 ;	main.c: 461: void main(void)
-                                   1305 ;	-----------------------------------------
-                                   1306 ;	 function main
-                                   1307 ;	-----------------------------------------
-      000574                       1308 _main:
-                                   1309 ;	main.c: 464: sys_clk_init();
-      000574 75 38                 1310 	call	_sys_clk_init
-                                   1311 ;	main.c: 465: led_init();
-      000576 78 38                 1312 	call	_led_init
-                                   1313 ;	main.c: 466: timer_init();
-      000578 7A 38                 1314 	call	_timer_init
-                                   1315 ;	main.c: 470: for (uint16_t i = 0; i < 65535; i++)
-      00057A 3D 13                 1316 	clear	_main_sloc10_1_0+0
-      00057C 3E 13                 1317 	clear	_main_sloc10_1_0+1
-      00057E                       1318 00111$:
-      00057E BD 0F                 1319 	mov	a, _main_sloc10_1_0+0
-      000580 FF 29                 1320 	sub	a, #0xff
-      000582 FF 2F                 1321 	mov	a, #0xff
-      000584 80 0B                 1322 	mov	p, a
-      000586 BE 0F                 1323 	mov	a, _main_sloc10_1_0+1
-      000588 80 0D                 1324 	subc	a, p
-      00058A 40 1A                 1325 	t1sn.io	f, c
-      00058C CB 32                 1326 	goto	00101$
-      00058E                       1327 00153$:
-                                   1328 ;	main.c: 472: __asm__("nop"); // Short delay to ensure stable power before configuring pins
-      00058E 00 00                 1329 	nop
-                                   1330 ;	main.c: 470: for (uint16_t i = 0; i < 65535; i++)
-      000590 3D 12                 1331 	inc	_main_sloc10_1_0+0
-      000592 3E 10                 1332 	addc	_main_sloc10_1_0+1
-      000594 BF 32                 1333 	goto	00111$
-      000596                       1334 00101$:
-                                   1335 ;	main.c: 474: PAC |= TX_PIN; // Set PA.0 as output
-      000596 D1 1E                 1336 	set1.io	__pac, #3
-                                   1337 ;	main.c: 475: PA |= TX_PIN;  // Idle High
-      000598 D0 1E                 1338 	set1.io	__pa, #3
-                                   1339 ;	main.c: 478: touch_init();
-      00059A 6C 38                 1340 	call	_touch_init
-                                   1341 ;	main.c: 480: state = BLUE;
-      00059C 01 2F                 1342 	mov	a, #0x01
-      00059E 89 0B                 1343 	mov	_state+0, a
-                                   1344 ;	main.c: 481: step = NONE;
-      0005A0 08 13                 1345 	clear	_step+0
-                                   1346 ;	main.c: 482: handle_state_update();
-      0005A2 80 39                 1347 	call	_handle_state_update
-                                   1348 ;	main.c: 486: while (init_samples--)
-      0005A4 0A 2F                 1349 	mov	a, #0x0a
-      0005A6 BF 0B                 1350 	mov	_main_sloc11_1_0+0, a
-      0005A8                       1351 00102$:
-      0005A8 BF 0F                 1352 	mov	a, _main_sloc11_1_0+0
-      0005AA BF 12                 1353 	dec	_main_sloc11_1_0+0
-      0005AC 00 2B                 1354 	cneqsn	a, #0x00
-      0005AE DE 32                 1355 	goto	00104$
-      0005B0                       1356 00154$:
-                                   1357 ;	main.c: 488: base_touch = running_avg(read_touch_raw());
-      0005B0 BC 38                 1358 	call	_read_touch_raw
-      0005B2 C8 0B                 1359 	mov	_running_avg_PARM_1+0, a
-      0005B4 CB 39                 1360 	call	_running_avg
-      0005B6 A6 0B                 1361 	mov	_base_touch+0, a
-      0005B8 27 13                 1362 	clear	_base_touch+1
-      0005BA D4 32                 1363 	goto	00102$
-      0005BC                       1364 00104$:
-                                   1365 ;	main.c: 490: calc_touch_window();
-      0005BC 94 38                 1366 	call	_calc_touch_window
-                                   1367 ;	main.c: 492: while (1)
-      0005BE                       1368 00108$:
-                                   1369 ;	main.c: 494: if (TM2CT >= GLOBAL_TICK_ms)
-      0005BE DD 01                 1370 	mov.io	a, __tm2ct
-      0005C0 0A 29                 1371 	sub	a, #0x0a
-      0005C2 40 18                 1372 	t0sn.io	f, c
-      0005C4 DF 32                 1373 	goto	00108$
-      0005C6                       1374 00155$:
-                                   1375 ;	main.c: 496: TM2CT = 0; // Clear the timer count
-      0005C6 00 2F                 1376 	mov	a, #0x00
-      0005C8 9D 01                 1377 	mov.io	__tm2ct, a
-                                   1378 ;	main.c: 497: handle_tick();
-      0005CA 51 3A                 1379 	call	_handle_tick
-      0005CC DF 32                 1380 	goto	00108$
-                                   1381 ;	main.c: 500: }
-      0005CE 7A 00                 1382 	ret
-                                   1383 	.area CODE
-                                   1384 	.area CONST
+      000480 89 0C                 1142 	sub	a, _state+0
+      000482 B0 0B                 1143 	mov	_uart_tx_byte_PARM_1+0, a
+      000484 4A 38                 1144 	call	_uart_tx_byte
+                                   1145 ;	main.c: 375: uart_tx_byte(last_touch);
+      000486 A8 0F                 1146 	mov	a, _last_touch+0
+      000488 B0 0B                 1147 	mov	_uart_tx_byte_PARM_1+0, a
+      00048A 4A 38                 1148 	call	_uart_tx_byte
+                                   1149 ;	main.c: 376: button_handled = 1;
+      00048C 01 2F                 1150 	mov	a, #0x01
+      00048E A0 0B                 1151 	mov	_button_handled+0, a
+                                   1152 ;	main.c: 377: handle_state_update();
+      000490 80 39                 1153 	call	_handle_state_update
+                                   1154 ;	main.c: 378: state_check();
+      000492 C8 30                 1155 	goto	_state_check
+      000494 7A 00                 1156 	ret
+      000496                       1157 00110$:
+                                   1158 ;	main.c: 382: uart_tx_byte(READ_TOKEN);
+      000496 FF 2F                 1159 	mov	a, #0xff
+      000498 B0 0B                 1160 	mov	_uart_tx_byte_PARM_1+0, a
+      00049A 4A 38                 1161 	call	_uart_tx_byte
+                                   1162 ;	main.c: 383: uart_tx_byte(last_touch);
+      00049C A8 0F                 1163 	mov	a, _last_touch+0
+      00049E B0 0B                 1164 	mov	_uart_tx_byte_PARM_1+0, a
+      0004A0 4A 30                 1165 	goto	_uart_tx_byte
+                                   1166 ;	main.c: 385: }
+      0004A2 7A 00                 1167 	ret
+                                   1168 ;	main.c: 387: void handle_tick(void)
+                                   1169 ;	-----------------------------------------
+                                   1170 ;	 function handle_tick
+                                   1171 ;	-----------------------------------------
+      0004A4                       1172 _handle_tick:
+                                   1173 ;	main.c: 389: button_check();
+      0004A4 FC 39                 1174 	call	_button_check
+                                   1175 ;	main.c: 391: if (state_update_delay_ms_cnt >= GLOBAL_TICK_ms && step != NONE)
+      0004A6 A5 0F                 1176 	mov	a, _state_update_delay_ms_cnt+1
+      0004A8 80 0B                 1177 	mov	p, a
+      0004AA A4 0F                 1178 	mov	a, _state_update_delay_ms_cnt+0
+      0004AC 0A 29                 1179 	sub	a, #0x0a
+      0004AE 80 0F                 1180 	mov	a, p
+      0004B0 61 00                 1181 	subc	a
+      0004B2 40 18                 1182 	t0sn.io	f, c
+      0004B4 B9 32                 1183 	goto	00107$
+      0004B6                       1184 00151$:
+      0004B6 88 0F                 1185 	mov	a, _step+0
+      0004B8 00 2B                 1186 	cneqsn	a, #0x00
+      0004BA B9 32                 1187 	goto	00107$
+      0004BC                       1188 00152$:
+                                   1189 ;	main.c: 393: state_update_delay_ms_cnt -= GLOBAL_TICK_ms;
+      0004BC A4 0F                 1190 	mov	a, _state_update_delay_ms_cnt+0
+      0004BE 0A 29                 1191 	sub	a, #0x0a
+      0004C0 80 0B                 1192 	mov	p, a
+      0004C2 A5 0F                 1193 	mov	a, _state_update_delay_ms_cnt+1
+      0004C4 61 00                 1194 	subc	a
+      0004C6 A5 0B                 1195 	mov	_state_update_delay_ms_cnt+1, a
+      0004C8 80 0F                 1196 	mov	a, p
+      0004CA A4 0B                 1197 	mov	_state_update_delay_ms_cnt+0, a
+                                   1198 ;	main.c: 395: if (led_update_delay_ms_cnt >= LED_UPDATE_DELAY_ms)
+      0004CC A3 0F                 1199 	mov	a, _led_update_delay_ms_cnt+1
+      0004CE 80 0B                 1200 	mov	p, a
+      0004D0 A2 0F                 1201 	mov	a, _led_update_delay_ms_cnt+0
+      0004D2 32 29                 1202 	sub	a, #0x32
+      0004D4 80 0F                 1203 	mov	a, p
+      0004D6 61 00                 1204 	subc	a
+      0004D8 40 18                 1205 	t0sn.io	f, c
+      0004DA B0 32                 1206 	goto	00105$
+      0004DC                       1207 00153$:
+                                   1208 ;	main.c: 397: for (uint8_t i = 0; i < LED_COUNT; i++)
+      0004DC 38 13                 1209 	clear	_handle_tick_sloc5_1_0+0
+      0004DE                       1210 00110$:
+      0004DE B8 0F                 1211 	mov	a, _handle_tick_sloc5_1_0+0
+      0004E0 04 29                 1212 	sub	a, #0x04
+      0004E2 40 1A                 1213 	t1sn.io	f, c
+      0004E4 AD 32                 1214 	goto	00103$
+      0004E6                       1215 00154$:
+                                   1216 ;	main.c: 399: if (fades[i] > 0)
+      0004E6 16 2F                 1217 	mov	a, #(_fades + 0)
+      0004E8 38 0C                 1218 	add	a, _handle_tick_sloc5_1_0+0
+      0004EA 80 0B                 1219 	mov	p, a
+      0004EC 81 03                 1220 	idxm	a, p
+      0004EE 00 2B                 1221 	cneqsn	a, #0x00
+      0004F0 AB 32                 1222 	goto	00111$
+      0004F2                       1223 00155$:
+                                   1224 ;	main.c: 401: fades[i]--;
+      0004F2 16 2F                 1225 	mov	a, #(_fades + 0)
+      0004F4 38 0C                 1226 	add	a, _handle_tick_sloc5_1_0+0
+      0004F6 80 0B                 1227 	mov	p, a
+      0004F8 81 03                 1228 	idxm	a, p
+      0004FA 01 29                 1229 	sub	a, #0x01
+      0004FC 80 03                 1230 	idxm	p, a
+                                   1231 ;	main.c: 403: pixel_buff[i].r = (pixel_buff[i].r - r_step);
+      0004FE B8 0F                 1232 	mov	a, _handle_tick_sloc5_1_0+0
+      000500 6B 00                 1233 	sl	a
+      000502 38 0C                 1234 	add	a, _handle_tick_sloc5_1_0+0
+      000504 B9 0B                 1235 	mov	_handle_tick_sloc6_1_0+0, a
+      000506 0A 2F                 1236 	mov	a, #(_pixel_buff + 0)
+      000508 39 0C                 1237 	add	a, _handle_tick_sloc6_1_0+0
+      00050A 01 28                 1238 	add	a, #0x01
+      00050C BA 0B                 1239 	mov	_handle_tick_sloc7_1_0+0, a
+      00050E 0A 2F                 1240 	mov	a, #(_pixel_buff + 0)
+      000510 39 0C                 1241 	add	a, _handle_tick_sloc6_1_0+0
+      000512 01 28                 1242 	add	a, #0x01
+      000514 80 0B                 1243 	mov	p, a
+      000516 81 03                 1244 	idxm	a, p
+      000518 9D 0C                 1245 	sub	a, _r_step+0
+      00051A 80 0B                 1246 	mov	p, a
+      00051C BA 0F                 1247 	mov	a, _handle_tick_sloc7_1_0+0
+      00051E 80 13                 1248 	xch	a, p
+      000520 80 03                 1249 	idxm	p, a
+                                   1250 ;	main.c: 404: pixel_buff[i].g = (pixel_buff[i].g - g_step);
+      000522 0A 2F                 1251 	mov	a, #(_pixel_buff + 0)
+      000524 39 0C                 1252 	add	a, _handle_tick_sloc6_1_0+0
+      000526 BB 0B                 1253 	mov	_handle_tick_sloc8_1_0+0, a
+      000528 0A 2F                 1254 	mov	a, #(_pixel_buff + 0)
+      00052A 39 0C                 1255 	add	a, _handle_tick_sloc6_1_0+0
+      00052C 80 0B                 1256 	mov	p, a
+      00052E 81 03                 1257 	idxm	a, p
+      000530 9E 0C                 1258 	sub	a, _g_step+0
+      000532 80 0B                 1259 	mov	p, a
+      000534 BB 0F                 1260 	mov	a, _handle_tick_sloc8_1_0+0
+      000536 80 13                 1261 	xch	a, p
+      000538 80 03                 1262 	idxm	p, a
+                                   1263 ;	main.c: 405: pixel_buff[i].b = (pixel_buff[i].b - b_step);
+      00053A 0A 2F                 1264 	mov	a, #(_pixel_buff + 0)
+      00053C 39 0C                 1265 	add	a, _handle_tick_sloc6_1_0+0
+      00053E 02 28                 1266 	add	a, #0x02
+      000540 BC 0B                 1267 	mov	_handle_tick_sloc9_1_0+0, a
+      000542 0A 2F                 1268 	mov	a, #(_pixel_buff + 0)
+      000544 39 0C                 1269 	add	a, _handle_tick_sloc6_1_0+0
+      000546 02 28                 1270 	add	a, #0x02
+      000548 80 0B                 1271 	mov	p, a
+      00054A 81 03                 1272 	idxm	a, p
+      00054C 9F 0C                 1273 	sub	a, _b_step+0
+      00054E 80 0B                 1274 	mov	p, a
+      000550 BC 0F                 1275 	mov	a, _handle_tick_sloc9_1_0+0
+      000552 80 13                 1276 	xch	a, p
+      000554 80 03                 1277 	idxm	p, a
+      000556                       1278 00111$:
+                                   1279 ;	main.c: 397: for (uint8_t i = 0; i < LED_COUNT; i++)
+      000556 38 12                 1280 	inc	_handle_tick_sloc5_1_0+0
+      000558 6F 32                 1281 	goto	00110$
+      00055A                       1282 00103$:
+                                   1283 ;	main.c: 409: output_leds();
+      00055A 81 38                 1284 	call	_output_leds
+                                   1285 ;	main.c: 410: led_update_delay_ms_cnt = 0;
+      00055C 22 13                 1286 	clear	_led_update_delay_ms_cnt+0
+      00055E 23 13                 1287 	clear	_led_update_delay_ms_cnt+1
+      000560                       1288 00105$:
+                                   1289 ;	main.c: 413: led_update_delay_ms_cnt += GLOBAL_TICK_ms;
+      000560 A2 0F                 1290 	mov	a, _led_update_delay_ms_cnt+0
+      000562 0A 28                 1291 	add	a, #0x0a
+      000564 80 0B                 1292 	mov	p, a
+      000566 A3 0F                 1293 	mov	a, _led_update_delay_ms_cnt+1
+      000568 60 00                 1294 	addc	a
+      00056A A3 0B                 1295 	mov	_led_update_delay_ms_cnt+1, a
+      00056C 80 0F                 1296 	mov	a, p
+      00056E A2 0B                 1297 	mov	_led_update_delay_ms_cnt+0, a
+                                   1298 ;	main.c: 415: return;
+      000570 7A 00                 1299 	ret
+      000572                       1300 00107$:
+                                   1301 ;	main.c: 418: state_check();
+      000572 C8 30                 1302 	goto	_state_check
+                                   1303 ;	main.c: 419: }
+      000574 7A 00                 1304 	ret
+                                   1305 ;	main.c: 421: void main(void)
+                                   1306 ;	-----------------------------------------
+                                   1307 ;	 function main
+                                   1308 ;	-----------------------------------------
+      000576                       1309 _main:
+                                   1310 ;	main.c: 424: sys_clk_init();
+      000576 75 38                 1311 	call	_sys_clk_init
+                                   1312 ;	main.c: 425: led_init();
+      000578 78 38                 1313 	call	_led_init
+                                   1314 ;	main.c: 426: timer_init();
+      00057A 7A 38                 1315 	call	_timer_init
+                                   1316 ;	main.c: 430: for (uint16_t i = 0; i < 65535; i++)
+      00057C 3D 13                 1317 	clear	_main_sloc10_1_0+0
+      00057E 3E 13                 1318 	clear	_main_sloc10_1_0+1
+      000580                       1319 00111$:
+      000580 BD 0F                 1320 	mov	a, _main_sloc10_1_0+0
+      000582 FF 29                 1321 	sub	a, #0xff
+      000584 FF 2F                 1322 	mov	a, #0xff
+      000586 80 0B                 1323 	mov	p, a
+      000588 BE 0F                 1324 	mov	a, _main_sloc10_1_0+1
+      00058A 80 0D                 1325 	subc	a, p
+      00058C 40 1A                 1326 	t1sn.io	f, c
+      00058E CC 32                 1327 	goto	00101$
+      000590                       1328 00153$:
+                                   1329 ;	main.c: 432: __asm__("nop"); // Short delay to ensure stable power before configuring pins
+      000590 00 00                 1330 	nop
+                                   1331 ;	main.c: 430: for (uint16_t i = 0; i < 65535; i++)
+      000592 3D 12                 1332 	inc	_main_sloc10_1_0+0
+      000594 3E 10                 1333 	addc	_main_sloc10_1_0+1
+      000596 C0 32                 1334 	goto	00111$
+      000598                       1335 00101$:
+                                   1336 ;	main.c: 434: PAC |= TX_PIN; // Set PA.0 as output
+      000598 D1 1E                 1337 	set1.io	__pac, #3
+                                   1338 ;	main.c: 435: PA |= TX_PIN;  // Idle High
+      00059A D0 1E                 1339 	set1.io	__pa, #3
+                                   1340 ;	main.c: 438: touch_init();
+      00059C 6C 38                 1341 	call	_touch_init
+                                   1342 ;	main.c: 440: state = BLUE;
+      00059E 01 2F                 1343 	mov	a, #0x01
+      0005A0 89 0B                 1344 	mov	_state+0, a
+                                   1345 ;	main.c: 441: step = NONE;
+      0005A2 08 13                 1346 	clear	_step+0
+                                   1347 ;	main.c: 442: handle_state_update();
+      0005A4 80 39                 1348 	call	_handle_state_update
+                                   1349 ;	main.c: 446: while (init_samples--)
+      0005A6 0A 2F                 1350 	mov	a, #0x0a
+      0005A8 BF 0B                 1351 	mov	_main_sloc11_1_0+0, a
+      0005AA                       1352 00102$:
+      0005AA BF 0F                 1353 	mov	a, _main_sloc11_1_0+0
+      0005AC BF 12                 1354 	dec	_main_sloc11_1_0+0
+      0005AE 00 2B                 1355 	cneqsn	a, #0x00
+      0005B0 DF 32                 1356 	goto	00104$
+      0005B2                       1357 00154$:
+                                   1358 ;	main.c: 448: base_touch = running_avg(read_touch_raw());
+      0005B2 BC 38                 1359 	call	_read_touch_raw
+      0005B4 C8 0B                 1360 	mov	_running_avg_PARM_1+0, a
+      0005B6 CB 39                 1361 	call	_running_avg
+      0005B8 A6 0B                 1362 	mov	_base_touch+0, a
+      0005BA 27 13                 1363 	clear	_base_touch+1
+      0005BC D5 32                 1364 	goto	00102$
+      0005BE                       1365 00104$:
+                                   1366 ;	main.c: 450: calc_touch_window();
+      0005BE 94 38                 1367 	call	_calc_touch_window
+                                   1368 ;	main.c: 452: while (1)
+      0005C0                       1369 00108$:
+                                   1370 ;	main.c: 454: if (TM2CT >= GLOBAL_TICK_ms)
+      0005C0 DD 01                 1371 	mov.io	a, __tm2ct
+      0005C2 0A 29                 1372 	sub	a, #0x0a
+      0005C4 40 18                 1373 	t0sn.io	f, c
+      0005C6 E0 32                 1374 	goto	00108$
+      0005C8                       1375 00155$:
+                                   1376 ;	main.c: 456: TM2CT = 0; // Clear the timer count
+      0005C8 00 2F                 1377 	mov	a, #0x00
+      0005CA 9D 01                 1378 	mov.io	__tm2ct, a
+                                   1379 ;	main.c: 457: handle_tick();
+      0005CC 52 3A                 1380 	call	_handle_tick
+      0005CE E0 32                 1381 	goto	00108$
+                                   1382 ;	main.c: 460: }
+      0005D0 7A 00                 1383 	ret
+                                   1384 	.area CODE
                                    1385 	.area CONST
-      0006A4                       1386 _orange_base_color:
-      0006A4 08 02                 1387 	ret #0x08	; 8
-      0006A6 20 02                 1388 	ret #0x20	; 32
-      0006A8 00 02                 1389 	ret #0x00	; 0
-                                   1390 	.area CODE
-                                   1391 	.area CONST
-      0006AA                       1392 _orange_highlight_color:
-      0006AA 28 02                 1393 	ret #0x28	; 40
-      0006AC 70 02                 1394 	ret #0x70	; 112	'p'
-      0006AE 10 02                 1395 	ret #0x10	; 16
-                                   1396 	.area CODE
-                                   1397 	.area CONST
-      0006B0                       1398 _blue_base_color:
-      0006B0 00 02                 1399 	ret #0x00	; 0
+                                   1386 	.area CONST
+      0006A6                       1387 _orange_base_color:
+      0006A6 08 02                 1388 	ret #0x08	; 8
+      0006A8 20 02                 1389 	ret #0x20	; 32
+      0006AA 00 02                 1390 	ret #0x00	; 0
+                                   1391 	.area CODE
+                                   1392 	.area CONST
+      0006AC                       1393 _orange_highlight_color:
+      0006AC 28 02                 1394 	ret #0x28	; 40
+      0006AE 70 02                 1395 	ret #0x70	; 112	'p'
+      0006B0 10 02                 1396 	ret #0x10	; 16
+                                   1397 	.area CODE
+                                   1398 	.area CONST
+      0006B2                       1399 _blue_base_color:
       0006B2 00 02                 1400 	ret #0x00	; 0
-      0006B4 40 02                 1401 	ret #0x40	; 64
-                                   1402 	.area CODE
-                                   1403 	.area CONST
-      0006B6                       1404 _blue_highlight_color:
-      0006B6 10 02                 1405 	ret #0x10	; 16
+      0006B4 00 02                 1401 	ret #0x00	; 0
+      0006B6 40 02                 1402 	ret #0x40	; 64
+                                   1403 	.area CODE
+                                   1404 	.area CONST
+      0006B8                       1405 _blue_highlight_color:
       0006B8 10 02                 1406 	ret #0x10	; 16
-      0006BA 80 02                 1407 	ret #0x80	; 128
-                                   1408 	.area CODE
-                                   1409 	.area CONST
-      0006BC                       1410 _off_color:
-      0006BC 00 02                 1411 	ret #0x00	; 0
+      0006BA 10 02                 1407 	ret #0x10	; 16
+      0006BC 80 02                 1408 	ret #0x80	; 128
+                                   1409 	.area CODE
+                                   1410 	.area CONST
+      0006BE                       1411 _off_color:
       0006BE 00 02                 1412 	ret #0x00	; 0
       0006C0 00 02                 1413 	ret #0x00	; 0
-                                   1414 	.area CODE
-                                   1415 	.area CABS (ABS)
+      0006C2 00 02                 1414 	ret #0x00	; 0
+                                   1415 	.area CODE
+                                   1416 	.area CABS (ABS)

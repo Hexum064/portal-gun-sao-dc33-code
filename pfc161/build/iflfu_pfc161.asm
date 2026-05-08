@@ -1128,7 +1128,7 @@ _button_check:
 	clear	_resample_count+0
 	clear	_resample_count+1
 00108$:
-;	main.c: 380: if (button_down == 1 && button_handled == 0)
+;	main.c: 372: if (button_down == 1 && button_handled == 0)
 	mov	a, _button_down+0
 	ceqsn	a, #0x01
 	goto	00110$
@@ -1137,41 +1137,42 @@ _button_check:
 	ceqsn	a, #0x00
 	goto	00110$
 00149$:
-;	main.c: 382: uart_tx_byte(TOUCH_TOKEN);
+;	main.c: 374: uart_tx_byte(TOUCH_TOKEN - state);
 	mov	a, #0xfe
+	sub	a, _state+0
+	mov	_uart_tx_byte_PARM_1+0, a
+	call	_uart_tx_byte
+;	main.c: 375: uart_tx_byte(last_touch);
+	mov	a, _last_touch+0
+	mov	_uart_tx_byte_PARM_1+0, a
+	call	_uart_tx_byte
+;	main.c: 376: button_handled = 1;
+	mov	a, #0x01
+	mov	_button_handled+0, a
+;	main.c: 377: handle_state_update();
+	call	_handle_state_update
+;	main.c: 378: state_check();
+	goto	_state_check
+	ret
+00110$:
+;	main.c: 382: uart_tx_byte(READ_TOKEN);
+	mov	a, #0xff
 	mov	_uart_tx_byte_PARM_1+0, a
 	call	_uart_tx_byte
 ;	main.c: 383: uart_tx_byte(last_touch);
 	mov	a, _last_touch+0
 	mov	_uart_tx_byte_PARM_1+0, a
-	call	_uart_tx_byte
-;	main.c: 384: button_handled = 1;
-	mov	a, #0x01
-	mov	_button_handled+0, a
-;	main.c: 385: handle_state_update();
-	call	_handle_state_update
-;	main.c: 386: state_check();
-	goto	_state_check
-	ret
-00110$:
-;	main.c: 390: uart_tx_byte(READ_TOKEN);
-	mov	a, #0xff
-	mov	_uart_tx_byte_PARM_1+0, a
-	call	_uart_tx_byte
-;	main.c: 391: uart_tx_byte(last_touch);
-	mov	a, _last_touch+0
-	mov	_uart_tx_byte_PARM_1+0, a
 	goto	_uart_tx_byte
-;	main.c: 425: }
+;	main.c: 385: }
 	ret
-;	main.c: 427: void handle_tick(void)
+;	main.c: 387: void handle_tick(void)
 ;	-----------------------------------------
 ;	 function handle_tick
 ;	-----------------------------------------
 _handle_tick:
-;	main.c: 429: button_check();
+;	main.c: 389: button_check();
 	call	_button_check
-;	main.c: 431: if (state_update_delay_ms_cnt >= GLOBAL_TICK_ms && step != NONE)
+;	main.c: 391: if (state_update_delay_ms_cnt >= GLOBAL_TICK_ms && step != NONE)
 	mov	a, _state_update_delay_ms_cnt+1
 	mov	p, a
 	mov	a, _state_update_delay_ms_cnt+0
@@ -1185,7 +1186,7 @@ _handle_tick:
 	cneqsn	a, #0x00
 	goto	00107$
 00152$:
-;	main.c: 433: state_update_delay_ms_cnt -= GLOBAL_TICK_ms;
+;	main.c: 393: state_update_delay_ms_cnt -= GLOBAL_TICK_ms;
 	mov	a, _state_update_delay_ms_cnt+0
 	sub	a, #0x0a
 	mov	p, a
@@ -1194,7 +1195,7 @@ _handle_tick:
 	mov	_state_update_delay_ms_cnt+1, a
 	mov	a, p
 	mov	_state_update_delay_ms_cnt+0, a
-;	main.c: 435: if (led_update_delay_ms_cnt >= LED_UPDATE_DELAY_ms)
+;	main.c: 395: if (led_update_delay_ms_cnt >= LED_UPDATE_DELAY_ms)
 	mov	a, _led_update_delay_ms_cnt+1
 	mov	p, a
 	mov	a, _led_update_delay_ms_cnt+0
@@ -1204,7 +1205,7 @@ _handle_tick:
 	t0sn.io	f, c
 	goto	00105$
 00153$:
-;	main.c: 437: for (uint8_t i = 0; i < LED_COUNT; i++)
+;	main.c: 397: for (uint8_t i = 0; i < LED_COUNT; i++)
 	clear	_handle_tick_sloc5_1_0+0
 00110$:
 	mov	a, _handle_tick_sloc5_1_0+0
@@ -1212,7 +1213,7 @@ _handle_tick:
 	t1sn.io	f, c
 	goto	00103$
 00154$:
-;	main.c: 439: if (fades[i] > 0)
+;	main.c: 399: if (fades[i] > 0)
 	mov	a, #(_fades + 0)
 	add	a, _handle_tick_sloc5_1_0+0
 	mov	p, a
@@ -1220,14 +1221,14 @@ _handle_tick:
 	cneqsn	a, #0x00
 	goto	00111$
 00155$:
-;	main.c: 441: fades[i]--;
+;	main.c: 401: fades[i]--;
 	mov	a, #(_fades + 0)
 	add	a, _handle_tick_sloc5_1_0+0
 	mov	p, a
 	idxm	a, p
 	sub	a, #0x01
 	idxm	p, a
-;	main.c: 443: pixel_buff[i].r = (pixel_buff[i].r - r_step);
+;	main.c: 403: pixel_buff[i].r = (pixel_buff[i].r - r_step);
 	mov	a, _handle_tick_sloc5_1_0+0
 	sl	a
 	add	a, _handle_tick_sloc5_1_0+0
@@ -1246,7 +1247,7 @@ _handle_tick:
 	mov	a, _handle_tick_sloc7_1_0+0
 	xch	a, p
 	idxm	p, a
-;	main.c: 444: pixel_buff[i].g = (pixel_buff[i].g - g_step);
+;	main.c: 404: pixel_buff[i].g = (pixel_buff[i].g - g_step);
 	mov	a, #(_pixel_buff + 0)
 	add	a, _handle_tick_sloc6_1_0+0
 	mov	_handle_tick_sloc8_1_0+0, a
@@ -1259,7 +1260,7 @@ _handle_tick:
 	mov	a, _handle_tick_sloc8_1_0+0
 	xch	a, p
 	idxm	p, a
-;	main.c: 445: pixel_buff[i].b = (pixel_buff[i].b - b_step);
+;	main.c: 405: pixel_buff[i].b = (pixel_buff[i].b - b_step);
 	mov	a, #(_pixel_buff + 0)
 	add	a, _handle_tick_sloc6_1_0+0
 	add	a, #0x02
@@ -1275,17 +1276,17 @@ _handle_tick:
 	xch	a, p
 	idxm	p, a
 00111$:
-;	main.c: 437: for (uint8_t i = 0; i < LED_COUNT; i++)
+;	main.c: 397: for (uint8_t i = 0; i < LED_COUNT; i++)
 	inc	_handle_tick_sloc5_1_0+0
 	goto	00110$
 00103$:
-;	main.c: 449: output_leds();
+;	main.c: 409: output_leds();
 	call	_output_leds
-;	main.c: 450: led_update_delay_ms_cnt = 0;
+;	main.c: 410: led_update_delay_ms_cnt = 0;
 	clear	_led_update_delay_ms_cnt+0
 	clear	_led_update_delay_ms_cnt+1
 00105$:
-;	main.c: 453: led_update_delay_ms_cnt += GLOBAL_TICK_ms;
+;	main.c: 413: led_update_delay_ms_cnt += GLOBAL_TICK_ms;
 	mov	a, _led_update_delay_ms_cnt+0
 	add	a, #0x0a
 	mov	p, a
@@ -1294,25 +1295,25 @@ _handle_tick:
 	mov	_led_update_delay_ms_cnt+1, a
 	mov	a, p
 	mov	_led_update_delay_ms_cnt+0, a
-;	main.c: 455: return;
+;	main.c: 415: return;
 	ret
 00107$:
-;	main.c: 458: state_check();
+;	main.c: 418: state_check();
 	goto	_state_check
-;	main.c: 459: }
+;	main.c: 419: }
 	ret
-;	main.c: 461: void main(void)
+;	main.c: 421: void main(void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	main.c: 464: sys_clk_init();
+;	main.c: 424: sys_clk_init();
 	call	_sys_clk_init
-;	main.c: 465: led_init();
+;	main.c: 425: led_init();
 	call	_led_init
-;	main.c: 466: timer_init();
+;	main.c: 426: timer_init();
 	call	_timer_init
-;	main.c: 470: for (uint16_t i = 0; i < 65535; i++)
+;	main.c: 430: for (uint16_t i = 0; i < 65535; i++)
 	clear	_main_sloc10_1_0+0
 	clear	_main_sloc10_1_0+1
 00111$:
@@ -1325,27 +1326,27 @@ _main:
 	t1sn.io	f, c
 	goto	00101$
 00153$:
-;	main.c: 472: __asm__("nop"); // Short delay to ensure stable power before configuring pins
+;	main.c: 432: __asm__("nop"); // Short delay to ensure stable power before configuring pins
 	nop
-;	main.c: 470: for (uint16_t i = 0; i < 65535; i++)
+;	main.c: 430: for (uint16_t i = 0; i < 65535; i++)
 	inc	_main_sloc10_1_0+0
 	addc	_main_sloc10_1_0+1
 	goto	00111$
 00101$:
-;	main.c: 474: PAC |= TX_PIN; // Set PA.0 as output
+;	main.c: 434: PAC |= TX_PIN; // Set PA.0 as output
 	set1.io	__pac, #3
-;	main.c: 475: PA |= TX_PIN;  // Idle High
+;	main.c: 435: PA |= TX_PIN;  // Idle High
 	set1.io	__pa, #3
-;	main.c: 478: touch_init();
+;	main.c: 438: touch_init();
 	call	_touch_init
-;	main.c: 480: state = BLUE;
+;	main.c: 440: state = BLUE;
 	mov	a, #0x01
 	mov	_state+0, a
-;	main.c: 481: step = NONE;
+;	main.c: 441: step = NONE;
 	clear	_step+0
-;	main.c: 482: handle_state_update();
+;	main.c: 442: handle_state_update();
 	call	_handle_state_update
-;	main.c: 486: while (init_samples--)
+;	main.c: 446: while (init_samples--)
 	mov	a, #0x0a
 	mov	_main_sloc11_1_0+0, a
 00102$:
@@ -1354,7 +1355,7 @@ _main:
 	cneqsn	a, #0x00
 	goto	00104$
 00154$:
-;	main.c: 488: base_touch = running_avg(read_touch_raw());
+;	main.c: 448: base_touch = running_avg(read_touch_raw());
 	call	_read_touch_raw
 	mov	_running_avg_PARM_1+0, a
 	call	_running_avg
@@ -1362,23 +1363,23 @@ _main:
 	clear	_base_touch+1
 	goto	00102$
 00104$:
-;	main.c: 490: calc_touch_window();
+;	main.c: 450: calc_touch_window();
 	call	_calc_touch_window
-;	main.c: 492: while (1)
+;	main.c: 452: while (1)
 00108$:
-;	main.c: 494: if (TM2CT >= GLOBAL_TICK_ms)
+;	main.c: 454: if (TM2CT >= GLOBAL_TICK_ms)
 	mov.io	a, __tm2ct
 	sub	a, #0x0a
 	t0sn.io	f, c
 	goto	00108$
 00155$:
-;	main.c: 496: TM2CT = 0; // Clear the timer count
+;	main.c: 456: TM2CT = 0; // Clear the timer count
 	mov	a, #0x00
 	mov.io	__tm2ct, a
-;	main.c: 497: handle_tick();
+;	main.c: 457: handle_tick();
 	call	_handle_tick
 	goto	00108$
-;	main.c: 500: }
+;	main.c: 460: }
 	ret
 	.area CODE
 	.area CONST

@@ -88,7 +88,7 @@ Symbol Table
   1 _fades                                                         000014 GR
   1 _g_step                                                        00001C GR
   F _handle_state_update                                           00028A GR
-  F _handle_tick                                                   00042C GR
+  F _handle_tick                                                   00042E GR
   1 _handle_tick_sloc5_1_0                                         000036 R
   1 _handle_tick_sloc6_1_0                                         000037 R
   1 _handle_tick_sloc7_1_0                                         000038 R
@@ -100,7 +100,7 @@ Symbol Table
   F _led_init                                                      00007A GR
   1 _led_update_delay_ms_cnt                                       000020 GR
   1 _lo_touch                                                      00002A GR
-  F _main                                                          0004FE GR
+  F _main                                                          000500 GR
   1 _main_sloc10_1_0                                               00003B R
   1 _main_sloc11_1_0                                               00003D R
  10 _off_color                                                     000018 GR
@@ -157,7 +157,7 @@ Area Table
    C PREG                                       size      0   flags    8
    D PREG2                                      size      2   flags    8
    E HEADER3                                    size     14   flags    8
-   F CODE                                       size    55A   flags    0
+   F CODE                                       size    55C   flags    0
   10 CONST                                      size     1E   flags    0
   11 CABS                                       size      0   flags    8
 
