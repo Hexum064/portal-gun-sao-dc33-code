@@ -38,53 +38,19 @@
 #define STATE_7_DELAY_ms 1000
 
 #define LED_UPDATE_DELAY_ms 50
-#define TOUCH_THRESHOLD 6
-#define RESAMPLE_BASE_COUNT 300
+#define TOUCH_WINDOW_DIV 25
+#define RESAMPLE_COUNT_10ms 1600 // 16 seconds
+#define INIT_TOUCH_SAMPLES 10
+
+#define READ_TOKEN 0xFF
+#define TOUCH_TOKEN 0xFE
 
 #define DEBUG
 
-#ifdef DEBUG
 #define F_CPU 600000L
-#define TX_PIN 0x08 // Example GPIO pin
+#define TX_PIN 0x08 // PA3
 #define BAUD_RATE 9600
 #define BIT_PERIOD (F_CPU / BAUD_RATE)
-
-// Microsecond delay for SDCC (approximate)
-void delay_cycles(uint16_t cycles)
-{
-    while (cycles--)
-    {
-        __asm__("nop"); // Adjust based on compiler cycle counts
-    }
-}
-
-void uart_tx_byte(uint16_t data)
-{
-    // 1. Start Bit (Low)
-    PA &= ~TX_PIN;
-    delay_cycles(BIT_PERIOD);
-
-    // 2. Data Bits (8 bits, LSB first)
-    for (uint8_t i = 0; i < 16; i++)
-    {
-        if (data & 0x01)
-        {
-            PA |= TX_PIN;
-        }
-        else
-        {
-            PA &= ~TX_PIN;
-        }
-        data >>= 1;
-        delay_cycles(BIT_PERIOD);
-    }
-
-    // 3. Stop Bit (High)
-    PA |= TX_PIN;
-    delay_cycles(BIT_PERIOD);
-}
-
-#endif
 
 typedef struct
 {
@@ -137,17 +103,56 @@ volatile uint8_t r_step = 0;
 volatile uint8_t g_step = 0;
 volatile uint8_t b_step = 0;
 
-volatile uint8_t button_ctr = 0;
+volatile uint8_t button_handled = 0;
 volatile uint8_t button_down = 0;
 
 volatile uint16_t led_update_delay_ms_cnt = 0;
 volatile uint16_t state_update_delay_ms_cnt = 0;
 
-volatile uint16_t touch_base = 0;
+volatile uint16_t base_touch = 0;
 volatile uint16_t last_touch = 0;
+volatile uint16_t hi_touch = 0;
+volatile uint16_t lo_touch = 0;
 volatile uint16_t resample_count = 0;
 
-void touch_init()
+// Microsecond delay for SDCC (approximate)
+void delay_cycles(uint16_t cycles)
+{
+    while (cycles--)
+    {
+        __asm__("nop"); // Adjust based on compiler cycle counts
+    }
+}
+
+void uart_tx_byte(uint8_t data)
+{
+    // 1. Start Bit (Low)
+    PA &= ~TX_PIN;
+    delay_cycles(BIT_PERIOD);
+
+    // 2. Data Bits (8 bits, LSB first)
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        if (data & 0x01)
+        {
+            PA |= TX_PIN;
+        }
+        else
+        {
+            PA &= ~TX_PIN;
+        }
+        data >>= 1;
+        delay_cycles(BIT_PERIOD);
+    }
+
+    // 3. Stop Bit (High)
+    PA |= TX_PIN;
+    delay_cycles(BIT_PERIOD);
+
+    delay_cycles(BIT_PERIOD);
+}
+
+void touch_init(void)
 {
     // Configure the touch sensing module
     TS = TS_TP_CLK_IHRC_DIV2 | TS_TP_VREF_VCC05 | TS_DISCHARGE_WAIT_128CLOCKS;
@@ -156,26 +161,28 @@ void touch_init()
     PADIER &= ~(BTN_bm | CS_bm); // Disable digital input for touch and CS pins
 }
 
-void sys_clk_init()
+void sys_clk_init(void)
 {
     // Enable hi speed, div 2, enable low speed. Leave WD disabled
     CLKMD = CLKMD_ENABLE_IHRC | CLKMD_IHRC_DIV2 | CLKMD_ENABLE_ILRC; // First enable IHRC
 }
 
-void led_init()
+void led_init(void)
 {
     // Set pin 5 as output for LED
     PAC |= LED_bm;
 }
 
-void timer_init()
+void timer_init(void)
 {
     TM2B = 0xFF; // Max bound for 8-bit timer
     TM2C = TM2C_CLK_ILRC | TM2C_OUT_DISABLE | TM2C_MODE_PERIOD;
     TM2S = TM2S_PRESCALE_DIV64; // Should be 1ms, and start
 }
 
-void output_leds()
+// Reminder for when I forget: Best to keep this here because of how
+// paduk assembly uses variables and labels.
+void output_leds(void)
 {
     __asm__("    mov a, _bytes              ;move our byte count into a");
     __asm__("    mov _byte_ctr, a           ;move a into our index counter");
@@ -200,7 +207,24 @@ void output_leds()
     __asm__("    goto	00010$              ;goto the next byte");
 }
 
-uint16_t read_touch_raw()
+void calc_touch_window(void)
+{
+    uint16_t big_thress = base_touch * TOUCH_WINDOW_DIV;
+    uint16_t thresh = big_thress >> 7; // divide by 128
+
+    hi_touch = base_touch + thresh;
+    lo_touch = (base_touch > thresh) ? base_touch - thresh : 0;
+
+    // #ifdef DEBUG
+
+    //     uart_tx_byte(base_touch);
+    //     uart_tx_byte(lo_touch);
+    //     uart_tx_byte(hi_touch);
+
+    // #endif
+}
+
+uint16_t read_touch_raw(void)
 {
     // 1. Select channel and enable touch module
     TKE1 = TKE1_TK6_PA4; // Use PA4 as touch input
@@ -213,7 +237,7 @@ uint16_t read_touch_raw()
     return (TKCH << 8) | TKCL;
 }
 
-void state_check()
+void state_check(void)
 {
 
     switch (step)
@@ -272,7 +296,7 @@ void state_check()
     }
 }
 
-void handle_state_update()
+void handle_state_update(void)
 {
 
     switch (state)
@@ -303,49 +327,65 @@ void handle_state_update()
     }
 }
 
-void button_check()
+uint8_t running_avg(uint8_t new_val)
 {
-    uint16_t touch_value = read_touch_raw();
+    static uint32_t filter_reg = 0;
 
-#ifdef DEBUG
-            uart_tx_byte(touch_value);
-#endif
+    // Bit-shift (>> 3) is the same as dividing by 8
+    filter_reg = filter_reg - (filter_reg >> 3) + new_val;
 
-    // if (touch_value == last_touch)
-    // {
-    //     resample_count++;
-    // }
-    // else
-    // {
-    //     resample_count = 0;
-    //     last_touch = touch_value;
-    // }
+    return (uint8_t)(filter_reg >> 3);
+}
 
-    // if (resample_count >= RESAMPLE_BASE_COUNT)
-    // {
-    //     touch_base = touch_value;
-    //     resample_count = 0;
-    // }
-    
-    if (touch_value < TOUCH_THRESHOLD)
+void button_check(void)
+{
+    // should happen every ~10ms.
+
+    last_touch = running_avg(read_touch_raw());
+
+    if (last_touch < lo_touch)
     {
-
-        if (!button_down)
-        {
-
-            button_down = 1;
-            handle_state_update();
-            state_check();
-        }
+        button_down = 1;
+        base_touch = last_touch;
+        calc_touch_window();
+        resample_count = 0;
+    }
+    else if (last_touch > hi_touch)
+    {
+        button_down = 0;
+        button_handled = 0;
+        base_touch = last_touch;
+        calc_touch_window();
+        resample_count = 0;
     }
     else
     {
-
-        button_down = 0;
+        resample_count++;
+        if (resample_count >= RESAMPLE_COUNT_10ms)
+        {
+            base_touch = last_touch;
+            calc_touch_window();
+            resample_count = 0;
+        }
     }
+
+    if (button_down == 1 && button_handled == 0)
+    {
+        uart_tx_byte(TOUCH_TOKEN);
+        uart_tx_byte(last_touch);
+        button_handled = 1;
+        handle_state_update();
+        state_check();
+    }
+    else
+    {
+        uart_tx_byte(READ_TOKEN);
+        uart_tx_byte(last_touch);
+    }
+
 }
 
-void handle_tick()
+void handle_tick(void)
 {
     button_check();
 
@@ -398,11 +438,17 @@ void main(void)
 
     touch_init();
 
-    touch_base = read_touch_raw();
-
     state = BLUE;
     step = NONE;
     handle_state_update();
+
+    uint8_t init_samples = INIT_TOUCH_SAMPLES;
+
+    while (init_samples--)
+    {
+        base_touch = running_avg(read_touch_raw());
+    }
+    calc_touch_window();
 
     while (1)
     {
