@@ -1138,7 +1138,7 @@
       00047C 4B 32                 1138 	goto	00110$
       00047E                       1139 00149$:
                                    1140 ;	main.c: 374: uart_tx_byte(TOUCH_TOKEN - state);
-      00047E FE 2F                 1141 	mov	a, #0xfe
+      00047E CE 2F                 1141 	mov	a, #0xce
       000480 89 0C                 1142 	sub	a, _state+0
       000482 B0 0B                 1143 	mov	_uart_tx_byte_PARM_1+0, a
       000484 4A 38                 1144 	call	_uart_tx_byte
@@ -1156,7 +1156,7 @@
       000494 7A 00                 1156 	ret
       000496                       1157 00110$:
                                    1158 ;	main.c: 382: uart_tx_byte(READ_TOKEN);
-      000496 FF 2F                 1159 	mov	a, #0xff
+      000496 CF 2F                 1159 	mov	a, #0xcf
       000498 B0 0B                 1160 	mov	_uart_tx_byte_PARM_1+0, a
       00049A 4A 38                 1161 	call	_uart_tx_byte
                                    1162 ;	main.c: 383: uart_tx_byte(last_touch);

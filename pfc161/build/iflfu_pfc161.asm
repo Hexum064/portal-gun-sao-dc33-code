@@ -1138,7 +1138,7 @@ _button_check:
 	goto	00110$
 00149$:
 ;	main.c: 374: uart_tx_byte(TOUCH_TOKEN - state);
-	mov	a, #0xfe
+	mov	a, #0xce
 	sub	a, _state+0
 	mov	_uart_tx_byte_PARM_1+0, a
 	call	_uart_tx_byte
@@ -1156,7 +1156,7 @@ _button_check:
 	ret
 00110$:
 ;	main.c: 382: uart_tx_byte(READ_TOKEN);
-	mov	a, #0xff
+	mov	a, #0xcf
 	mov	_uart_tx_byte_PARM_1+0, a
 	call	_uart_tx_byte
 ;	main.c: 383: uart_tx_byte(last_touch);

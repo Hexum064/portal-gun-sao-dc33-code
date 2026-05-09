@@ -42,8 +42,8 @@
 #define RESAMPLE_COUNT_10ms 1600 // 16 seconds
 #define INIT_TOUCH_SAMPLES 10
 
-#define READ_TOKEN 0xFF
-#define TOUCH_TOKEN 0xFE
+#define READ_TOKEN 0xCF
+#define TOUCH_TOKEN 0xCE
 
 #define DEBUG
 
